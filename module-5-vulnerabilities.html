@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Module 5 · Finding Vulnerabilities | HTTP for Bug Hunters</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌐</text></svg>">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
@@ -18,47 +19,48 @@
     </header>
 
     <div class="container section">
-        <div style="max-width: 780px; margin: 0 auto;">
+        <div style="max-width: 820px; margin: 0 auto;">
             <div class="module-number" style="margin-bottom: 1rem;">MODULE 5</div>
             <h1>Finding Vulnerabilities at the HTTP Layer</h1>
             <p style="font-size: 1.15rem; color: var(--text-dim); margin-bottom: 2.5rem;">
-                Many vulnerabilities can be discovered simply by carefully observing and manipulating HTTP traffic.
+                Many vulnerabilities can be discovered simply by carefully observing and manipulating HTTP traffic. This module focuses on patterns that appear frequently in real bug bounty programs and pentests.
             </p>
 
             <div class="objectives">
                 <h4>Learning Objectives</h4>
                 <ul>
-                    <li>Map common vulnerability types to HTTP behavior</li>
-                    <li>Develop a methodology for testing at the protocol level</li>
-                    <li>Understand how OWASP Top 10 categories manifest in HTTP</li>
+                    <li>Map common vulnerability categories to HTTP-level behavior</li>
+                    <li>Develop a practical methodology for testing at the protocol level</li>
+                    <li>Understand how OWASP Top 10 issues manifest in HTTP requests and responses</li>
                 </ul>
             </div>
 
             <div class="content-block">
-                <h2>Common Vulnerability Patterns</h2>
-                
-                <h3>Broken Access Control</h3>
-                <p>Manipulating IDs, roles, or tokens in requests. The most common category in bug bounties.</p>
+                <h2>Common Vulnerability Patterns at HTTP Level</h2>
 
-                <h3>Injection</h3>
-                <p>SQL, command, NoSQL, template injection through user-controlled parameters in requests.</p>
+                <h3 style="margin-top: 1.75rem;">Broken Access Control</h3>
+                <p>The #1 category in bug bounties. Usually involves manipulating IDs, roles, or tokens in requests.</p>
+                <p><strong>Testing Approach:</strong> Change object IDs, test horizontal and vertical privilege escalation, check for BOLA/BFLA issues.</p>
 
-                <h3>Security Misconfiguration</h3>
-                <p>Missing security headers, verbose error messages, exposed sensitive endpoints.</p>
+                <h3 style="margin-top: 1.75rem;">Injection</h3>
+                <p>SQL, command, NoSQL, template, LDAP injection through user-controlled parameters.</p>
+                <p><strong>Testing Approach:</strong> Supply special characters and observe behavior changes or error messages.</p>
 
-                <h3>Business Logic Flaws</h3>
-                <p>Workflow bypasses, price manipulation, race conditions — often found by deviating from expected request sequences.</p>
+                <h3 style="margin-top: 1.75rem;">Security Misconfiguration</h3>
+                <p>Missing security headers, verbose error messages, exposed sensitive endpoints or files.</p>
+
+                <h3 style="margin-top: 1.75rem;">Business Logic Flaws</h3>
+                <p>Workflow bypasses, price/rate manipulation, race conditions. These often require deviating from the expected request sequence.</p>
             </div>
 
             <div class="content-block">
                 <h2>Testing Mindset</h2>
-                <p>Good hunters treat every request as potentially attacker-controlled and every response as potentially leaky.</p>
-                <p>Ask yourself constantly: <em>"What would happen if I changed this?"</em></p>
+                <p>Good hunters treat every request as potentially attacker-controlled and every response as potentially leaky. Constantly ask: <em>"What if I change this?"</em></p>
             </div>
 
             <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border);">
                 <h3>Practice Recommendations</h3>
-                <p style="color: var(--text-dim);">Work through PortSwigger's access control, injection, and business logic labs.</p>
+                <p style="color: var(--text-dim);">Work through PortSwigger labs on access control, injection, and business logic.</p>
             </div>
         </div>
     </div>
