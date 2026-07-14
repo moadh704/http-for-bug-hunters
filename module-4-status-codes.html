@@ -7,6 +7,16 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌐</text></svg>">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .quiz-section { margin-top: 3rem; padding-top: 2rem; border-top: 2px solid var(--border); }
+        .quiz-question { margin-bottom: 1.5rem; padding: 1.25rem; background: var(--panel-2); border-radius: var(--radius); }
+        .quiz-options label { display: block; margin: 0.5rem 0; padding: 0.6rem 1rem; background: var(--panel); border: 1px solid var(--border); border-radius: 8px; cursor: pointer; transition: all 0.2s; }
+        .quiz-options label:hover { border-color: var(--accent); }
+        .quiz-options input { margin-right: 0.6rem; }
+        .quiz-result { margin-top: 1rem; padding: 1rem; border-radius: 8px; display: none; }
+        .quiz-result.correct { background: rgba(16, 185, 129, 0.1); border: 1px solid #10b981; color: #10b981; }
+        .next-module-btn { display: none; margin-top: 1.5rem; }
+    </style>
 </head>
 <body>
     <header>
@@ -23,7 +33,7 @@
             <div class="module-number" style="margin-bottom: 1rem;">MODULE 4</div>
             <h1>Status Codes & Behavior</h1>
             <p style="font-size: 1.15rem; color: var(--text-dim); margin-bottom: 2.5rem;">
-                HTTP status codes are not just success/failure signals. They often act as powerful oracles during testing and can leak significant information about the application.
+                HTTP status codes are not just success/failure signals. They often act as powerful oracles during testing.
             </p>
 
             <div class="objectives">
@@ -32,44 +42,52 @@
                     <li>Understand what different status code classes reveal in practice</li>
                     <li>Learn how to use status codes as testing oracles</li>
                     <li>Identify information leakage through error responses</li>
-                    <li>Recognize inconsistent behavior between users/roles</li>
                 </ul>
             </div>
 
             <div class="content-block">
                 <h2>Status Code Classes & Security Relevance</h2>
+                <h3 style="margin-top: 1.5rem;">2xx Success</h3>
+                <p>Inconsistent responses between different privilege levels often reveal access control issues.</p>
 
-                <h3 style="margin-top: 1.75rem;">2xx Success</h3>
-                <p>200, 201, 204 are the most common. Inconsistent responses between different privilege levels often reveal access control issues.</p>
+                <h3 style="margin-top: 1.5rem;">3xx Redirection</h3>
+                <p>Open redirect vulnerabilities frequently live here.</p>
 
-                <h3 style="margin-top: 1.75rem;">3xx Redirection</h3>
-                <p>Open redirect vulnerabilities frequently live here. Also check whether sensitive headers (cookies, Authorization) are sent to third-party domains.</p>
+                <h3 style="margin-top: 1.5rem;">4xx Client Errors</h3>
+                <p>Differences in responses between valid and invalid users can confirm resource existence or bypass authorization.</p>
 
-                <h3 style="margin-top: 1.75rem;">4xx Client Errors</h3>
-                <p>400, 401, 403, 404, 422. Differences in responses (timing, content, status) between valid and invalid users can confirm the existence of resources or bypass authorization.</p>
-
-                <h3 style="margin-top: 1.75rem;">5xx Server Errors</h3>
-                <p>These are goldmines. Stack traces, internal paths, framework versions, and database errors are frequently leaked.</p>
+                <h3 style="margin-top: 1.5rem;">5xx Server Errors</h3>
+                <p>Goldmine for reconnaissance — stack traces, internal paths, and framework versions are often leaked.</p>
             </div>
 
-            <div class="content-block">
-                <h2>Practical Testing Techniques</h2>
-                <ul style="margin-left: 1.2rem; color: var(--text-dim);">
-                    <li>Compare responses for the same request as different users/roles.</li>
-                    <li>Send malformed or unexpected input and carefully analyze error messages.</li>
-                    <li>Use timing differences as oracles (e.g., 404 vs 403 response times).</li>
-                    <li>Never ignore 5xx responses — they often reveal internal implementation details.</li>
-                </ul>
-            </div>
+            <!-- QUIZ -->
+            <div class="quiz-section">
+                <h2>Module 4 Quiz</h2>
+                <p style="color: var(--text-dim); margin-bottom: 1.5rem;">Score at least 70% to unlock Module 5.</p>
 
-            <div class="content-block">
-                <h2>Key Takeaways</h2>
-                <ul style="margin-left: 1.2rem; color: var(--text-dim);">
-                    <li>Status codes can act as powerful information oracles.</li>
-                    <li>Inconsistent behavior between users is often a sign of access control problems.</li>
-                    <li>Error responses frequently leak sensitive internal information.</li>
-                    <li>Always analyze both the status code and the full response body/headers.</li>
-                </ul>
+                <div class="quiz-question">
+                    <p><strong>1. Which status code class is often the biggest information leak?</strong></p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q1" value="a"> 2xx</label>
+                        <label><input type="radio" name="q1" value="b"> 5xx</label>
+                        <label><input type="radio" name="q1" value="c"> 3xx</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <p><strong>2. Why are status codes useful during testing?</strong></p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q2" value="a"> They act as oracles and can reveal access control issues</label>
+                        <label><input type="radio" name="q2" value="b"> They make the site faster</label>
+                        <label><input type="radio" name="q2" value="c"> They are only for developers</label>
+                    </div>
+                </div>
+
+                <button class="btn" onclick="checkQuiz()">Submit Quiz</button>
+                <div id="quiz-result" class="quiz-result"></div>
+                <a href="module-5-vulnerabilities.html" id="next-module-btn" class="btn next-module-btn">
+                    Complete Module & Go to Module 5 <i class="fas fa-arrow-right"></i>
+                </a>
             </div>
 
             <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border);">
@@ -84,5 +102,39 @@
             <p>Module 4 of HTTP for Bug Hunters</p>
         </div>
     </footer>
+
+    <script>
+        function checkQuiz() {
+            const answers = { q1: 'b', q2: 'a' };
+            let score = 0;
+            const total = 2;
+
+            if (document.querySelector('input[name="q1"]:checked')?.value === answers.q1) score++;
+            if (document.querySelector('input[name="q2"]:checked')?.value === answers.q2) score++;
+
+            const result = document.getElementById('quiz-result');
+            const nextBtn = document.getElementById('next-module-btn');
+            result.style.display = 'block';
+
+            if ((score / total) >= 0.7) {
+                result.className = 'quiz-result correct';
+                result.innerHTML = `Great! You scored ${score}/${total}. Module 4 completed.`;
+                localStorage.setItem('module4_completed', 'true');
+                nextBtn.style.display = 'inline-flex';
+            } else {
+                result.style.background = 'rgba(239, 68, 68, 0.1)';
+                result.style.border = '1px solid #ef4444';
+                result.style.color = '#ef4444';
+                result.innerHTML = `You scored ${score}/${total}. Review and try again.`;
+                nextBtn.style.display = 'none';
+            }
+        }
+
+        window.onload = function() {
+            if (localStorage.getItem('module4_completed') === 'true') {
+                document.getElementById('next-module-btn').style.display = 'inline-flex';
+            }
+        };
+    </script>
 </body>
 </html>
