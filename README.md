@@ -8,7 +8,7 @@ This project delivers **clear theory + practical application** so bug bounty hun
 
 ---
 
-## Key Features
+## <img src="https://api.iconify.design/mdi/lightbulb-outline.svg?color=%2300d4c8" width="22" height="22" style="vertical-align: middle; margin-right: 8px;"/> Key Features
 
 - **Structured Learning Path** — Progressive modules designed like a mini academy
 - **Theory + Practice** — Every concept includes real-world testing approaches
@@ -19,7 +19,7 @@ This project delivers **clear theory + practical application** so bug bounty hun
 
 ---
 
-## Modules
+## <img src="https://api.iconify.design/mdi/book-open-page-variant.svg?color=%2300d4c8" width="22" height="22" style="vertical-align: middle; margin-right: 8px;"/> Modules
 
 | Module | Focus | Description |
 |--------|-------|-------------|
@@ -34,7 +34,7 @@ This project delivers **clear theory + practical application** so bug bounty hun
 
 ---
 
-## Getting Started
+## <img src="https://api.iconify.design/mdi/rocket-launch.svg?color=%2300d4c8" width="22" height="22" style="vertical-align: middle; margin-right: 8px;"/> Getting Started
 
 ```bash
 git clone https://github.com/moadh704/http-for-bug-hunters.git
@@ -47,7 +47,7 @@ Open `index.html` in your browser to begin.
 
 ---
 
-## Tech Stack
+## <img src="https://api.iconify.design/mdi/code-tags.svg?color=%2300d4c8" width="22" height="22" style="vertical-align: middle; margin-right: 8px;"/> Tech Stack
 
 - Pure HTML + CSS + Vanilla JavaScript
 - No heavy frameworks or build tools
@@ -55,14 +55,14 @@ Open `index.html` in your browser to begin.
 
 ---
 
-## Contributing
+## <img src="https://api.iconify.design/mdi/account-group.svg?color=%2300d4c8" width="22" height="22" style="vertical-align: middle; margin-right: 8px;"/> Contributing
 
 This project is maintained by [@moadh704](https://github.com/moadh704). 
 Suggestions and improvements are welcome.
 
 ---
 
-## License
+## <img src="https://api.iconify.design/mdi/file-document-outline.svg?color=%2300d4c8" width="22" height="22" style="vertical-align: middle; margin-right: 8px;"/> License
 
 MIT License
 
