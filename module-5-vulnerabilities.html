@@ -7,6 +7,16 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌐</text></svg>">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .quiz-section { margin-top: 3rem; padding-top: 2rem; border-top: 2px solid var(--border); }
+        .quiz-question { margin-bottom: 1.5rem; padding: 1.25rem; background: var(--panel-2); border-radius: var(--radius); }
+        .quiz-options label { display: block; margin: 0.5rem 0; padding: 0.6rem 1rem; background: var(--panel); border: 1px solid var(--border); border-radius: 8px; cursor: pointer; transition: all 0.2s; }
+        .quiz-options label:hover { border-color: var(--accent); }
+        .quiz-options input { margin-right: 0.6rem; }
+        .quiz-result { margin-top: 1rem; padding: 1rem; border-radius: 8px; display: none; }
+        .quiz-result.correct { background: rgba(16, 185, 129, 0.1); border: 1px solid #10b981; color: #10b981; }
+        .next-module-btn { display: none; margin-top: 1.5rem; }
+    </style>
 </head>
 <body>
     <header>
@@ -23,7 +33,7 @@
             <div class="module-number" style="margin-bottom: 1rem;">MODULE 5</div>
             <h1>Finding Vulnerabilities at the HTTP Layer</h1>
             <p style="font-size: 1.15rem; color: var(--text-dim); margin-bottom: 2.5rem;">
-                Many vulnerabilities can be discovered simply by carefully observing and manipulating HTTP traffic. This module focuses on patterns that appear frequently in real bug bounty programs and pentests.
+                Many vulnerabilities can be discovered simply by carefully observing and manipulating HTTP traffic.
             </p>
 
             <div class="objectives">
@@ -31,36 +41,54 @@
                 <ul>
                     <li>Map common vulnerability categories to HTTP-level behavior</li>
                     <li>Develop a practical methodology for testing at the protocol level</li>
-                    <li>Understand how OWASP Top 10 issues manifest in HTTP requests and responses</li>
                 </ul>
             </div>
 
             <div class="content-block">
-                <h2>Common Vulnerability Patterns at HTTP Level</h2>
+                <h2>Common Vulnerability Patterns</h2>
+                <h3 style="margin-top: 1.5rem;">Broken Access Control</h3>
+                <p>The most common category in bug bounties. Involves manipulating IDs, roles, or tokens.</p>
 
-                <h3 style="margin-top: 1.75rem;">Broken Access Control</h3>
-                <p>The #1 category in bug bounties. Usually involves manipulating IDs, roles, or tokens in requests.</p>
-                <p><strong>Testing Approach:</strong> Change object IDs, test horizontal and vertical privilege escalation, check for BOLA/BFLA issues.</p>
+                <h3 style="margin-top: 1.5rem;">Injection</h3>
+                <p>SQL, command, NoSQL, template injection through user-controlled parameters.</p>
 
-                <h3 style="margin-top: 1.75rem;">Injection</h3>
-                <p>SQL, command, NoSQL, template, LDAP injection through user-controlled parameters.</p>
-                <p><strong>Testing Approach:</strong> Supply special characters and observe behavior changes or error messages.</p>
-
-                <h3 style="margin-top: 1.75rem;">Security Misconfiguration</h3>
-                <p>Missing security headers, verbose error messages, exposed sensitive endpoints or files.</p>
-
-                <h3 style="margin-top: 1.75rem;">Business Logic Flaws</h3>
-                <p>Workflow bypasses, price/rate manipulation, race conditions. These often require deviating from the expected request sequence.</p>
+                <h3 style="margin-top: 1.5rem;">Business Logic Flaws</h3>
+                <p>Workflow bypasses, price manipulation, race conditions — often found by deviating from expected request sequences.</p>
             </div>
 
-            <div class="content-block">
-                <h2>Testing Mindset</h2>
-                <p>Good hunters treat every request as potentially attacker-controlled and every response as potentially leaky. Constantly ask: <em>"What if I change this?"</em></p>
+            <!-- QUIZ -->
+            <div class="quiz-section">
+                <h2>Module 5 Quiz</h2>
+                <p style="color: var(--text-dim); margin-bottom: 1.5rem;">Score at least 70% to unlock Module 6.</p>
+
+                <div class="quiz-question">
+                    <p><strong>1. What is the most common vulnerability category in bug bounties?</strong></p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q1" value="a"> Broken Access Control</label>
+                        <label><input type="radio" name="q1" value="b"> SQL Injection</label>
+                        <label><input type="radio" name="q1" value="c"> XSS</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <p><strong>2. Business logic flaws are often found by:</strong></p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q2" value="a"> Deviating from the expected request sequence</label>
+                        <label><input type="radio" name="q2" value="b"> Only using automated scanners</label>
+                        <label><input type="radio" name="q2" value="c"> Reading the documentation</label>
+                    </div>
+                </div>
+
+                <button class="btn" onclick="checkQuiz()">Submit Quiz</button>
+                <div id="quiz-result" class="quiz-result"></div>
+                <a href="module-6-advanced.html" id="next-module-btn" class="btn next-module-btn">
+                    Complete Module & Go to Module 6 <i class="fas fa-arrow-right"></i>
+                </a>
             </div>
 
             <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border);">
                 <h3>Practice Recommendations</h3>
-                <p style="color: var(--text-dim);">Work through PortSwigger labs on access control, injection, and business logic.</p>
+                <p style="color: var(--text-dim);">Work through PortSwigger labs on access control and business logic.</p>
             </div>
         </div>
     </div>
@@ -70,5 +98,39 @@
             <p>Module 5 of HTTP for Bug Hunters</p>
         </div>
     </footer>
+
+    <script>
+        function checkQuiz() {
+            const answers = { q1: 'a', q2: 'a' };
+            let score = 0;
+            const total = 2;
+
+            if (document.querySelector('input[name="q1"]:checked')?.value === answers.q1) score++;
+            if (document.querySelector('input[name="q2"]:checked')?.value === answers.q2) score++;
+
+            const result = document.getElementById('quiz-result');
+            const nextBtn = document.getElementById('next-module-btn');
+            result.style.display = 'block';
+
+            if ((score / total) >= 0.7) {
+                result.className = 'quiz-result correct';
+                result.innerHTML = `Well done! You scored ${score}/${total}. Module 5 completed.`;
+                localStorage.setItem('module5_completed', 'true');
+                nextBtn.style.display = 'inline-flex';
+            } else {
+                result.style.background = 'rgba(239, 68, 68, 0.1)';
+                result.style.border = '1px solid #ef4444';
+                result.style.color = '#ef4444';
+                result.innerHTML = `You scored ${score}/${total}. Review and try again.`;
+                nextBtn.style.display = 'none';
+            }
+        }
+
+        window.onload = function() {
+            if (localStorage.getItem('module5_completed') === 'true') {
+                document.getElementById('next-module-btn').style.display = 'inline-flex';
+            }
+        };
+    </script>
 </body>
 </html>
