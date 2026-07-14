@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Module 6 · Advanced Techniques | HTTP for Bug Hunters</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌐</text></svg>">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
@@ -18,50 +19,54 @@
     </header>
 
     <div class="container section">
-        <div style="max-width: 780px; margin: 0 auto;">
+        <div style="max-width: 820px; margin: 0 auto;">
             <div class="module-number" style="margin-bottom: 1rem;">MODULE 6</div>
             <h1>Advanced Techniques</h1>
             <p style="font-size: 1.15rem; color: var(--text-dim); margin-bottom: 2.5rem;">
-                Once fundamentals are solid, these techniques separate average hunters from strong ones.
+                Once the fundamentals are solid, these techniques separate average hunters from strong ones. They often require specific conditions but can have very high impact.
             </p>
 
             <div class="objectives">
                 <h4>Learning Objectives</h4>
                 <ul>
-                    <li>Understand advanced HTTP attacks</li>
-                    <li>Know when and how to apply them</li>
-                    <li>Recognize the conditions required for these attacks to work</li>
+                    <li>Understand advanced HTTP attacks and when they apply</li>
+                    <li>Recognize the conditions required for these attacks</li>
+                    <li>Know how to test for request smuggling, race conditions, and JWT issues</li>
                 </ul>
             </div>
 
             <div class="content-block">
                 <h2>Key Advanced Topics</h2>
-                
-                <h3>HTTP Request Smuggling</h3>
-                <p>Caused by disagreement between front-end and back-end servers on where one request ends and another begins. Often due to conflicting Content-Length and Transfer-Encoding headers.</p>
 
-                <h3>Race Conditions</h3>
-                <p>When applications check-then-act without proper locking. Single-packet attacks have made these more reliable.</p>
+                <h3 style="margin-top: 1.75rem;">HTTP Request Smuggling</h3>
+                <p>Caused by disagreement between front-end proxies and back-end servers about where one request ends and the next begins. Usually due to conflicting <code>Content-Length</code> and <code>Transfer-Encoding</code> headers.</p>
+                <p><strong>Testing Focus:</strong> CL.TE and TE.CL desync attacks using tools like Burp's HTTP Request Smuggler extension.</p>
 
-                <h3>JWT Attacks</h3>
-                <p>Algorithm confusion (alg: none), weak secrets, kid header manipulation, and more.</p>
+                <h3 style="margin-top: 1.75rem;">Race Conditions</h3>
+                <p>Occur when applications perform check-then-act operations without proper locking. Single-packet attack techniques have made these more reliable even over the internet.</p>
+                <p><strong>Testing Focus:</strong> Turbo Intruder or similar tools for sending concurrent requests.</p>
 
-                <h3>GraphQL Specific Issues</h3>
-                <p>Introspection, batching attacks, and resource exhaustion through nested queries.</p>
+                <h3 style="margin-top: 1.75rem;">JWT Attacks</h3>
+                <p>Common issues include algorithm confusion (<code>alg: none</code>), weak HMAC secrets, <code>kid</code> header manipulation, and JWT header injection.</p>
+                <p><strong>Testing Focus:</strong> Use <code>jwt_tool</code> or similar to test different attack vectors.</p>
+
+                <h3 style="margin-top: 1.75rem;">GraphQL-Specific Issues</h3>
+                <p>Introspection enabled in production, batching attacks to bypass rate limits, and deeply nested queries causing resource exhaustion.</p>
             </div>
 
             <div class="content-block">
                 <h2>Key Takeaways</h2>
                 <ul style="margin-left: 1.2rem; color: var(--text-dim);">
-                    <li>These attacks require specific conditions but can be very high impact.</li>
-                    <li>Always check for proxy chains and load balancers.</li>
-                    <li>JWT issues are still very common in modern applications.</li>
+                    <li>These attacks require specific conditions but are often very high impact when successful.</li>
+                    <li>Always check for proxy chains and load balancers when testing.</li>
+                    <li>JWT issues remain very common in modern applications.</li>
+                    <li>Advanced techniques often require specialized tools and patience.</li>
                 </ul>
             </div>
 
             <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border);">
                 <h3>Practice Recommendations</h3>
-                <p style="color: var(--text-dim);">PortSwigger has excellent labs on request smuggling, JWT, and GraphQL.</p>
+                <p style="color: var(--text-dim);">PortSwigger has excellent labs on request smuggling, JWT attacks, and GraphQL.</p>
             </div>
         </div>
     </div>
