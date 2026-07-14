@@ -1,41 +1,36 @@
 # HTTP for Bug Hunters
 
-A structured, high-quality learning resource for understanding **HTTP** from a web security and bug hunting perspective.
+> A high-quality, structured learning resource for understanding **HTTP** from a bug hunting and web security perspective.
 
-Inspired by platforms like Hack The Box Academy, this project focuses on delivering **clear theory + practical application** so security researchers and bug hunters can deeply understand what happens on the wire.
+This project delivers **clear theory + practical application** so bug bounty hunters, pentesters, and security researchers can deeply understand what happens on the wire.
 
-> **Goal**: Build one of the best free resources for learning HTTP internals with a security-first mindset.
-
----
-
-## 📋 Project Vision
-
-- Strong focus on **theoretical understanding** + **practical testing techniques**
-- Structured like a mini course / academy (modules & learning path)
-- Multiple pages for better readability and navigation
-- Professional, clean, and premium dark UI
-- High value for bug bounty hunters, pentesters, and security students
-- Recommend external hands-on labs (PortSwigger, etc.) instead of building labs inside
+**Goal**: Build one of the best free resources for learning HTTP internals with a security-first mindset.
 
 ---
 
-## 🔢 Current Status
+## ✨ Key Features
 
-This project is in active development.
+- **Structured Learning Path** — Progressive modules (like a mini academy)
+- **Theory + Practice** — Every concept includes real testing approaches
+- **Security Focused** — Built specifically for bug hunters, not generic web development
+- **High Quality Content** — Thoughtful explanations based on real-world usage
+- **Clean Design** — Professional dark UI across all pages
+- **Practice Guidance** — Curated recommendations (mainly PortSwigger labs)
 
-**Planned Structure:**
+---
 
-| Page                        | Description                                      |
-|----------------------------|--------------------------------------------------|
-| `index.html`               | Homepage + Learning Path                         |
-| `module-1-fundamentals.html` | HTTP Requests & Responses fundamentals         |
-| `module-2-methods.html`    | HTTP Methods deep dive + testing                 |
-| `module-3-headers.html`    | Request & Response Headers (Security focused)    |
-| `module-4-status-codes.html` | Status Codes & security implications           |
-| `module-5-vulnerabilities.html` | Finding issues at the HTTP layer             |
-| `module-6-advanced.html`   | Advanced techniques (Smuggling, Race Conditions, etc.) |
-| `practice.html`            | Curated practice recommendations + lab links     |
-| `cheatsheet.html`          | Quick Reference / Cheat Sheet                    |
+## 📚 Modules
+
+| Module | Focus | Description |
+|--------|-------|-------------|
+| [Homepage](index.html) | Overview | Learning path + introduction |
+| [Module 1](module-1-fundamentals.html) | Fundamentals | Requests, responses & transaction flow |
+| [Module 2](module-2-methods.html) | Methods | GET, POST, PUT, DELETE & security implications |
+| [Module 3](module-3-headers.html) | Headers | Request & response headers that matter |
+| [Module 4](module-4-status-codes.html) | Status Codes | How to use status codes during testing |
+| [Module 5](module-5-vulnerabilities.html) | Vulnerabilities | Finding issues at the HTTP layer |
+| [Module 6](module-6-advanced.html) | Advanced | Smuggling, race conditions, JWT attacks |
+| [Practice](practice.html) | Resources | Recommended labs and practice strategy |
 
 ---
 
@@ -46,13 +41,24 @@ git clone https://github.com/moadh704/http-for-bug-hunters.git
 cd http-for-bug-hunters
 ```
 
-Then open `index.html` in your browser (or enable GitHub Pages).
+Open `index.html` in your browser to start learning.
+
+> **Note**: GitHub Pages will be enabled soon for a live version.
+
+---
+
+## 🛠 Tech Stack
+
+- Pure HTML + CSS + Vanilla JavaScript
+- No heavy frameworks
+- Designed to be easy to read, maintain, and contribute to
 
 ---
 
 ## 🤝 Contributing
 
-This project is currently maintained by [@moadh704](https://github.com/moadh704). Suggestions and improvements are welcome.
+This project is maintained by [@moadh704](https://github.com/moadh704). 
+Suggestions, improvements, and feedback are very welcome.
 
 ---
 
@@ -62,4 +68,4 @@ MIT License
 
 ---
 
-**Built for people who want to truly understand HTTP at a deep level for security testing.**
+**Built with care for people who want to truly understand HTTP for security testing.**
