@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 1 · HTTP Fundamentals | HTTP for Bug Hunters</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <a href="index.html" class="logo">HTTP for Bug Hunters</a>
+                <a href="index.html" class="btn btn-secondary" style="padding:0.55rem 1.1rem; font-size:0.85rem;">Back to Learning Path</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container section">
+        <div style="max-width: 780px; margin: 0 auto;">
+            <div class="module-number" style="margin-bottom: 1rem;">MODULE 1</div>
+            <h1>HTTP Fundamentals</h1>
+            <p style="font-size: 1.15rem; color: var(--text-dim); margin-bottom: 2.5rem;">
+                Before you can hunt effectively, you need to understand how HTTP actually works under the hood.
+            </p>
+
+            <div class="objectives">
+                <h4>Learning Objectives</h4>
+                <ul>
+                    <li>Understand the request-response cycle</li>
+                    <li>Know the structure of HTTP requests and responses</li>
+                    <li>Recognize what parts of HTTP are attacker-controlled</li>
+                    <li>Build mental models for testing at the protocol level</li>
+                </ul>
+            </div>
+
+            <div class="content-block">
+                <h2>The Shape of an HTTP Transaction</h2>
+                <p>Every interaction on the web follows the same basic pattern:</p>
+                <ol style="margin: 1.25rem 0 1.25rem 1.5rem; color: var(--text-dim);">
+                    <li><strong>Client builds a request</strong></li>
+                    <li><strong>Server receives, parses, and authorizes it</strong></li>
+                    <li><strong>Server builds and sends a response</strong></li>
+                    <li><strong>Client receives and processes the response</strong></li>
+                </ol>
+                <p>Each of these four steps is a potential point of failure or exploitation. Most web vulnerabilities exist because one of these steps makes incorrect assumptions.</p>
+            </div>
+
+            <div class="content-block">
+                <h2>Anatomy of a Request</h2>
+                <p>An HTTP request consists of four parts:</p>
+                <div class="highlight" style="margin: 1.5rem 0;">
+                    <pre style="margin:0; font-size: 0.9rem; line-height: 1.6;"><code>GET /api/users/123 HTTP/1.1
+Host: example.com
+Authorization: Bearer eyJhbGci...
+Content-Type: application/json
+
+{"action": "view"}</code></pre>
+                </div>
+
+                <h4>Key Parts:</h4>
+                <ul style="margin-left: 1.2rem; color: var(--text-dim);">
+                    <li><strong>Request Line</strong>: Method + Path + HTTP Version</li>
+                    <li><strong>Headers</strong>: Metadata about the request</li>
+                    <li><strong>Blank Line</strong>: Separator</li>
+                    <li><strong>Body</strong> (optional): Data being sent</li>
+                </ul>
+
+                <p style="margin-top: 1.25rem;"><strong>Security Note:</strong> Almost everything in a request is attacker-controlled input until the server validates it. This is the foundation of most web attacks.</p>
+            </div>
+
+            <div class="content-block">
+                <h2>Anatomy of a Response</h2>
+                <div class="highlight" style="margin: 1.5rem 0;">
+                    <pre style="margin:0; font-size: 0.9rem; line-height: 1.6;"><code>HTTP/1.1 200 OK
+Content-Type: application/json
+Set-Cookie: session=abc123; HttpOnly; Secure
+
+{"id": 123, "name": "John"}</code></pre>
+                </div>
+
+                <p>Responses often leak more information than developers intend (stack traces, versions, internal paths, etc.). Learning to read responses carefully is a core skill.</p>
+            </div>
+
+            <div class="content-block">
+                <h2>Key Takeaways</h2>
+                <ul style="margin-left: 1.2rem; color: var(--text-dim);">
+                    <li>HTTP is a simple text-based protocol. This simplicity is both its strength and its weakness.</li>
+                    <li>Everything in a request can be manipulated until proven otherwise.</li>
+                    <li>Responses often contain more information than intended.</li>
+                    <li>Understanding the four steps of a transaction helps you find where assumptions break.</li>
+                </ul>
+            </div>
+
+            <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border);">
+                <h3>Practice Recommendations</h3>
+                <p style="color: var(--text-dim);">Go through these PortSwigger labs to reinforce the concepts:</p>
+                <ul style="margin-left: 1.2rem;">
+                    <li><a href="https://portswigger.net/web-security" target="_blank" style="color: var(--accent);">PortSwigger Web Security Academy</a> - Start with the HTTP fundamentals sections</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>Module 1 of HTTP for Bug Hunters</p>
+        </div>
+    </footer>
+</body>
+</html>
