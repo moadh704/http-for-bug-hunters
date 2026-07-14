@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 6 · Advanced Techniques | HTTP for Bug Hunters</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <a href="index.html" class="logo">HTTP for Bug Hunters</a>
+                <a href="index.html" class="btn btn-secondary" style="padding:0.55rem 1.1rem; font-size:0.85rem;">Back to Learning Path</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container section">
+        <div style="max-width: 780px; margin: 0 auto;">
+            <div class="module-number" style="margin-bottom: 1rem;">MODULE 6</div>
+            <h1>Advanced Techniques</h1>
+            <p style="font-size: 1.15rem; color: var(--text-dim); margin-bottom: 2.5rem;">
+                Once fundamentals are solid, these techniques separate average hunters from strong ones.
+            </p>
+
+            <div class="objectives">
+                <h4>Learning Objectives</h4>
+                <ul>
+                    <li>Understand advanced HTTP attacks</li>
+                    <li>Know when and how to apply them</li>
+                    <li>Recognize the conditions required for these attacks to work</li>
+                </ul>
+            </div>
+
+            <div class="content-block">
+                <h2>Key Advanced Topics</h2>
+                
+                <h3>HTTP Request Smuggling</h3>
+                <p>Caused by disagreement between front-end and back-end servers on where one request ends and another begins. Often due to conflicting Content-Length and Transfer-Encoding headers.</p>
+
+                <h3>Race Conditions</h3>
+                <p>When applications check-then-act without proper locking. Single-packet attacks have made these more reliable.</p>
+
+                <h3>JWT Attacks</h3>
+                <p>Algorithm confusion (alg: none), weak secrets, kid header manipulation, and more.</p>
+
+                <h3>GraphQL Specific Issues</h3>
+                <p>Introspection, batching attacks, and resource exhaustion through nested queries.</p>
+            </div>
+
+            <div class="content-block">
+                <h2>Key Takeaways</h2>
+                <ul style="margin-left: 1.2rem; color: var(--text-dim);">
+                    <li>These attacks require specific conditions but can be very high impact.</li>
+                    <li>Always check for proxy chains and load balancers.</li>
+                    <li>JWT issues are still very common in modern applications.</li>
+                </ul>
+            </div>
+
+            <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border);">
+                <h3>Practice Recommendations</h3>
+                <p style="color: var(--text-dim);">PortSwigger has excellent labs on request smuggling, JWT, and GraphQL.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>Module 6 of HTTP for Bug Hunters</p>
+        </div>
+    </footer>
+</body>
+</html>
