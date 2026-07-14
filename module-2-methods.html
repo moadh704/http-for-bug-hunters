@@ -7,6 +7,16 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌐</text></svg>">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .quiz-section { margin-top: 3rem; padding-top: 2rem; border-top: 2px solid var(--border); }
+        .quiz-question { margin-bottom: 1.5rem; padding: 1.25rem; background: var(--panel-2); border-radius: var(--radius); }
+        .quiz-options label { display: block; margin: 0.5rem 0; padding: 0.6rem 1rem; background: var(--panel); border: 1px solid var(--border); border-radius: 8px; cursor: pointer; transition: all 0.2s; }
+        .quiz-options label:hover { border-color: var(--accent); }
+        .quiz-options input { margin-right: 0.6rem; }
+        .quiz-result { margin-top: 1rem; padding: 1rem; border-radius: 8px; display: none; }
+        .quiz-result.correct { background: rgba(16, 185, 129, 0.1); border: 1px solid #10b981; color: #10b981; }
+        .next-module-btn { display: none; margin-top: 1.5rem; }
+    </style>
 </head>
 <body>
     <header>
@@ -45,7 +55,7 @@
                 <p><strong>Common Vulnerabilities:</strong></p>
                 <ul style="margin-left: 1.2rem; color: var(--text-dim);">
                     <li>IDOR by changing IDs in the URL</li>
-                    <li>Sensitive data exposure in query parameters (logged in proxies, browser history, Referer headers)</li>
+                    <li>Sensitive data exposure in query parameters</li>
                     <li>SSRF when the application fetches URLs from GET parameters</li>
                 </ul>
 
@@ -100,14 +110,34 @@
                 <p><strong>Pro Tip:</strong> Use tools like Burp Suite's Repeater or ffuf to quickly test different methods against the same endpoint.</p>
             </div>
 
-            <div class="content-block">
-                <h2>Key Takeaways</h2>
-                <ul style="margin-left: 1.2rem; color: var(--text-dim);">
-                    <li>Never trust that only documented methods are accepted.</li>
-                    <li>PUT and PATCH endpoints are frequently less protected than POST.</li>
-                    <li>DELETE is high impact — always test authorization thoroughly.</li>
-                    <li>Method swapping is a fast and high-value testing technique.</li>
-                </ul>
+            <!-- QUIZ SECTION -->
+            <div class="quiz-section">
+                <h2>Module 2 Quiz</h2>
+                <p style="color: var(--text-dim); margin-bottom: 1.5rem;">Complete the quiz to unlock Module 3. Score at least 70%.</p>
+
+                <div class="quiz-question">
+                    <p><strong>1. Which HTTP method is idempotent but not safe?</strong></p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q1" value="a"> GET</label>
+                        <label><input type="radio" name="q1" value="b"> PUT</label>
+                        <label><input type="radio" name="q1" value="c"> POST</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <p><strong>2. Why are PUT and PATCH often riskier than POST?</strong></p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q2" value="a"> They are always slower</label>
+                        <label><input type="radio" name="q2" value="b"> They are frequently less protected and allow mass assignment</label>
+                        <label><input type="radio" name="q2" value="c"> They don't support authentication</label>
+                    </div>
+                </div>
+
+                <button class="btn" onclick="checkQuiz()">Submit Quiz</button>
+                <div id="quiz-result" class="quiz-result"></div>
+                <a href="module-3-headers.html" id="next-module-btn" class="btn next-module-btn">
+                    Complete Module & Go to Module 3 <i class="fas fa-arrow-right"></i>
+                </a>
             </div>
 
             <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border);">
@@ -127,5 +157,39 @@
             <p>Module 2 of HTTP for Bug Hunters</p>
         </div>
     </footer>
+
+    <script>
+        function checkQuiz() {
+            const answers = { q1: 'b', q2: 'b' };
+            let score = 0;
+            const total = 2;
+
+            if (document.querySelector('input[name="q1"]:checked')?.value === answers.q1) score++;
+            if (document.querySelector('input[name="q2"]:checked')?.value === answers.q2) score++;
+
+            const result = document.getElementById('quiz-result');
+            const nextBtn = document.getElementById('next-module-btn');
+            result.style.display = 'block';
+
+            if ((score / total) >= 0.7) {
+                result.className = 'quiz-result correct';
+                result.innerHTML = `Great job! You scored ${score}/${total}. Module 2 completed.`;
+                localStorage.setItem('module2_completed', 'true');
+                nextBtn.style.display = 'inline-flex';
+            } else {
+                result.style.background = 'rgba(239, 68, 68, 0.1)';
+                result.style.border = '1px solid #ef4444';
+                result.style.color = '#ef4444';
+                result.innerHTML = `You scored ${score}/${total}. Review and try again.`;
+                nextBtn.style.display = 'none';
+            }
+        }
+
+        window.onload = function() {
+            if (localStorage.getItem('module2_completed') === 'true') {
+                document.getElementById('next-module-btn').style.display = 'inline-flex';
+            }
+        };
+    </script>
 </body>
 </html>
