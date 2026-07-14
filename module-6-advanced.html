@@ -7,6 +7,16 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌐</text></svg>">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .quiz-section { margin-top: 3rem; padding-top: 2rem; border-top: 2px solid var(--border); }
+        .quiz-question { margin-bottom: 1.5rem; padding: 1.25rem; background: var(--panel-2); border-radius: var(--radius); }
+        .quiz-options label { display: block; margin: 0.5rem 0; padding: 0.6rem 1rem; background: var(--panel); border: 1px solid var(--border); border-radius: 8px; cursor: pointer; transition: all 0.2s; }
+        .quiz-options label:hover { border-color: var(--accent); }
+        .quiz-options input { margin-right: 0.6rem; }
+        .quiz-result { margin-top: 1rem; padding: 1rem; border-radius: 8px; display: none; }
+        .quiz-result.correct { background: rgba(16, 185, 129, 0.1); border: 1px solid #10b981; color: #10b981; }
+        .next-module-btn { display: none; margin-top: 1.5rem; }
+    </style>
 </head>
 <body>
     <header>
@@ -23,7 +33,7 @@
             <div class="module-number" style="margin-bottom: 1rem;">MODULE 6</div>
             <h1>Advanced Techniques</h1>
             <p style="font-size: 1.15rem; color: var(--text-dim); margin-bottom: 2.5rem;">
-                Once the fundamentals are solid, these techniques separate average hunters from strong ones. They often require specific conditions but can have very high impact.
+                Once the fundamentals are solid, these techniques separate average hunters from strong ones.
             </p>
 
             <div class="objectives">
@@ -31,50 +41,97 @@
                 <ul>
                     <li>Understand advanced HTTP attacks and when they apply</li>
                     <li>Recognize the conditions required for these attacks</li>
-                    <li>Know how to test for request smuggling, race conditions, and JWT issues</li>
                 </ul>
             </div>
 
             <div class="content-block">
                 <h2>Key Advanced Topics</h2>
+                <h3 style="margin-top: 1.5rem;">HTTP Request Smuggling</h3>
+                <p>Caused by disagreement between front-end and back-end servers on request boundaries.</p>
 
-                <h3 style="margin-top: 1.75rem;">HTTP Request Smuggling</h3>
-                <p>Caused by disagreement between front-end proxies and back-end servers about where one request ends and the next begins. Usually due to conflicting <code>Content-Length</code> and <code>Transfer-Encoding</code> headers.</p>
-                <p><strong>Testing Focus:</strong> CL.TE and TE.CL desync attacks using tools like Burp's HTTP Request Smuggler extension.</p>
+                <h3 style="margin-top: 1.5rem;">Race Conditions</h3>
+                <p>Check-then-act operations without proper locking. Single-packet attacks have made these more reliable.</p>
 
-                <h3 style="margin-top: 1.75rem;">Race Conditions</h3>
-                <p>Occur when applications perform check-then-act operations without proper locking. Single-packet attack techniques have made these more reliable even over the internet.</p>
-                <p><strong>Testing Focus:</strong> Turbo Intruder or similar tools for sending concurrent requests.</p>
-
-                <h3 style="margin-top: 1.75rem;">JWT Attacks</h3>
-                <p>Common issues include algorithm confusion (<code>alg: none</code>), weak HMAC secrets, <code>kid</code> header manipulation, and JWT header injection.</p>
-                <p><strong>Testing Focus:</strong> Use <code>jwt_tool</code> or similar to test different attack vectors.</p>
-
-                <h3 style="margin-top: 1.75rem;">GraphQL-Specific Issues</h3>
-                <p>Introspection enabled in production, batching attacks to bypass rate limits, and deeply nested queries causing resource exhaustion.</p>
+                <h3 style="margin-top: 1.5rem;">JWT Attacks</h3>
+                <p>Algorithm confusion, weak secrets, kid header manipulation.</p>
             </div>
 
-            <div class="content-block">
-                <h2>Key Takeaways</h2>
-                <ul style="margin-left: 1.2rem; color: var(--text-dim);">
-                    <li>These attacks require specific conditions but are often very high impact when successful.</li>
-                    <li>Always check for proxy chains and load balancers when testing.</li>
-                    <li>JWT issues remain very common in modern applications.</li>
-                    <li>Advanced techniques often require specialized tools and patience.</li>
-                </ul>
+            <!-- QUIZ -->
+            <div class="quiz-section">
+                <h2>Module 6 Quiz</h2>
+                <p style="color: var(--text-dim); margin-bottom: 1.5rem;">Score at least 70% to complete the course.</p>
+
+                <div class="quiz-question">
+                    <p><strong>1. What usually causes HTTP Request Smuggling?</strong></p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q1" value="a"> Disagreement between front-end and back-end on request boundaries</label>
+                        <label><input type="radio" name="q1" value="b"> Slow internet connection</label>
+                        <label><input type="radio" name="q1" value="c"> Missing CSS files</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <p><strong>2. Which attack involves algorithm confusion?</strong></p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q2" value="a"> JWT Attacks</label>
+                        <label><input type="radio" name="q2" value="b"> SQL Injection</label>
+                        <label><input type="radio" name="q2" value="c"> Open Redirect</label>
+                    </div>
+                </div>
+
+                <button class="btn" onclick="checkQuiz()">Submit Quiz</button>
+                <div id="quiz-result" class="quiz-result"></div>
+                <div id="course-complete" style="display:none; margin-top:1.5rem; text-align:center;">
+                    <h3 style="color: #10b981;">🎉 Congratulations!</h3>
+                    <p>You have completed the HTTP for Bug Hunters course.</p>
+                    <a href="practice.html" class="btn">Go to Practice Recommendations</a>
+                </div>
             </div>
 
             <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border);">
                 <h3>Practice Recommendations</h3>
-                <p style="color: var(--text-dim);">PortSwigger has excellent labs on request smuggling, JWT attacks, and GraphQL.</p>
+                <p style="color: var(--text-dim);">PortSwigger has excellent labs on request smuggling, JWT, and GraphQL.</p>
             </div>
         </div>
     </div>
 
     <footer>
         <div class="container">
-            <p>Module 6 of HTTP for Bug Hunters</p>
+            <p>Module 6 of HTTP for Bug Hunters — Course Complete</p>
         </div>
     </footer>
+
+    <script>
+        function checkQuiz() {
+            const answers = { q1: 'a', q2: 'a' };
+            let score = 0;
+            const total = 2;
+
+            if (document.querySelector('input[name="q1"]:checked')?.value === answers.q1) score++;
+            if (document.querySelector('input[name="q2"]:checked')?.value === answers.q2) score++;
+
+            const result = document.getElementById('quiz-result');
+            const completeMsg = document.getElementById('course-complete');
+            result.style.display = 'block';
+
+            if ((score / total) >= 0.7) {
+                result.className = 'quiz-result correct';
+                result.innerHTML = `Excellent! You scored ${score}/${total}.`;
+                localStorage.setItem('module6_completed', 'true');
+                completeMsg.style.display = 'block';
+            } else {
+                result.style.background = 'rgba(239, 68, 68, 0.1)';
+                result.style.border = '1px solid #ef4444';
+                result.style.color = '#ef4444';
+                result.innerHTML = `You scored ${score}/${total}. Review and try again.`;
+            }
+        }
+
+        window.onload = function() {
+            if (localStorage.getItem('module6_completed') === 'true') {
+                document.getElementById('course-complete').style.display = 'block';
+            }
+        };
+    </script>
 </body>
 </html>
