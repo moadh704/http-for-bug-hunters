@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 5 · Finding Vulnerabilities | HTTP for Bug Hunters</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <a href="index.html" class="logo">HTTP for Bug Hunters</a>
+                <a href="index.html" class="btn btn-secondary" style="padding:0.55rem 1.1rem; font-size:0.85rem;">Back to Learning Path</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container section">
+        <div style="max-width: 780px; margin: 0 auto;">
+            <div class="module-number" style="margin-bottom: 1rem;">MODULE 5</div>
+            <h1>Finding Vulnerabilities at the HTTP Layer</h1>
+            <p style="font-size: 1.15rem; color: var(--text-dim); margin-bottom: 2.5rem;">
+                Many vulnerabilities can be discovered simply by carefully observing and manipulating HTTP traffic.
+            </p>
+
+            <div class="objectives">
+                <h4>Learning Objectives</h4>
+                <ul>
+                    <li>Map common vulnerability types to HTTP behavior</li>
+                    <li>Develop a methodology for testing at the protocol level</li>
+                    <li>Understand how OWASP Top 10 categories manifest in HTTP</li>
+                </ul>
+            </div>
+
+            <div class="content-block">
+                <h2>Common Vulnerability Patterns</h2>
+                
+                <h3>Broken Access Control</h3>
+                <p>Manipulating IDs, roles, or tokens in requests. The most common category in bug bounties.</p>
+
+                <h3>Injection</h3>
+                <p>SQL, command, NoSQL, template injection through user-controlled parameters in requests.</p>
+
+                <h3>Security Misconfiguration</h3>
+                <p>Missing security headers, verbose error messages, exposed sensitive endpoints.</p>
+
+                <h3>Business Logic Flaws</h3>
+                <p>Workflow bypasses, price manipulation, race conditions — often found by deviating from expected request sequences.</p>
+            </div>
+
+            <div class="content-block">
+                <h2>Testing Mindset</h2>
+                <p>Good hunters treat every request as potentially attacker-controlled and every response as potentially leaky.</p>
+                <p>Ask yourself constantly: <em>"What would happen if I changed this?"</em></p>
+            </div>
+
+            <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border);">
+                <h3>Practice Recommendations</h3>
+                <p style="color: var(--text-dim);">Work through PortSwigger's access control, injection, and business logic labs.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>Module 5 of HTTP for Bug Hunters</p>
+        </div>
+    </footer>
+</body>
+</html>
