@@ -7,6 +7,16 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌐</text></svg>">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .quiz-section { margin-top: 3rem; padding-top: 2rem; border-top: 2px solid var(--border); }
+        .quiz-question { margin-bottom: 1.5rem; padding: 1.25rem; background: var(--panel-2); border-radius: var(--radius); }
+        .quiz-options label { display: block; margin: 0.5rem 0; padding: 0.6rem 1rem; background: var(--panel); border: 1px solid var(--border); border-radius: 8px; cursor: pointer; transition: all 0.2s; }
+        .quiz-options label:hover { border-color: var(--accent); }
+        .quiz-options input { margin-right: 0.6rem; }
+        .quiz-result { margin-top: 1rem; padding: 1rem; border-radius: 8px; display: none; }
+        .quiz-result.correct { background: rgba(16, 185, 129, 0.1); border: 1px solid #10b981; color: #10b981; }
+        .next-module-btn { display: none; margin-top: 1.5rem; }
+    </style>
 </head>
 <body>
     <header>
@@ -23,7 +33,7 @@
             <div class="module-number" style="margin-bottom: 1rem;">MODULE 3</div>
             <h1>Headers Mastery</h1>
             <p style="font-size: 1.15rem; color: var(--text-dim); margin-bottom: 2.5rem;">
-                HTTP headers carry critical metadata. Many serious vulnerabilities (CORS misconfigurations, cache poisoning, authentication bypasses, XSS, etc.) live in how headers are processed or ignored.
+                HTTP headers carry critical metadata. Many serious vulnerabilities live in how headers are processed or ignored.
             </p>
 
             <div class="objectives">
@@ -32,71 +42,66 @@
                     <li>Understand the security implications of key request and response headers</li>
                     <li>Learn how to test for header-related vulnerabilities</li>
                     <li>Identify common misconfigurations in security headers</li>
-                    <li>Recognize when applications trust client-controlled headers unsafely</li>
                 </ul>
             </div>
 
             <div class="content-block">
                 <h2>Important Request Headers</h2>
+                <h3 style="margin-top: 1.5rem;">Authorization</h3>
+                <p>Carries tokens and API keys. Look for weak tokens, missing expiry, or leakage.</p>
 
-                <h3 style="margin-top: 1.75rem;">Authorization</h3>
-                <p>Carries authentication credentials (Bearer tokens, API keys, Basic auth, etc.).</p>
-                <p><strong>Testing Focus:</strong> Weak or predictable tokens, missing token expiry, token leakage in logs or Referer headers, algorithm confusion in JWTs.</p>
+                <h3 style="margin-top: 1.5rem;">X-Forwarded-For / X-Real-IP</h3>
+                <p>Often spoofable. Dangerous if used for access control or rate limiting.</p>
 
-                <h3 style="margin-top: 1.75rem;">Cookie</h3>
-                <p>Used for session management. The real security is usually enforced on the corresponding <code>Set-Cookie</code> response header.</p>
-                <p><strong>Testing Focus:</strong> Missing <code>Secure</code>, <code>HttpOnly</code>, or <code>SameSite</code> flags.</p>
-
-                <h3 style="margin-top: 1.75rem;">Content-Type</h3>
-                <p>Tells the server how to parse the body. Changing this can sometimes reach different (less validated) code paths.</p>
-                <p><strong>Testing Focus:</strong> Content-Type confusion attacks, reaching XML/JSON parsers unexpectedly.</p>
-
-                <h3 style="margin-top: 1.75rem;">X-Forwarded-For / X-Real-IP / X-Forwarded-Host</h3>
-                <p>Commonly used behind proxies. These headers are trivial to spoof.</p>
-                <p><strong>Testing Focus:</strong> IP-based access control bypass, password reset poisoning, rate limit bypass.</p>
-
-                <h3 style="margin-top: 1.75rem;">Origin & Referer</h3>
-                <p>Important for CORS and CSRF protection mechanisms.</p>
-                <p><strong>Testing Focus:</strong> CORS misconfigurations, Referer-based CSRF protection bypass.</p>
+                <h3 style="margin-top: 1.5rem;">Content-Type</h3>
+                <p>Can sometimes be manipulated to reach different (less validated) code paths.</p>
             </div>
 
             <div class="content-block">
                 <h2>Important Response Headers</h2>
+                <h3 style="margin-top: 1.5rem;">Set-Cookie</h3>
+                <p>Controls session security. Missing <code>Secure</code>, <code>HttpOnly</code>, or <code>SameSite</code> flags are common findings.</p>
 
-                <h3 style="margin-top: 1.75rem;">Set-Cookie</h3>
-                <p>Controls session security. Missing flags are very common findings.</p>
+                <h3 style="margin-top: 1.5rem;">Content-Security-Policy (CSP)</h3>
+                <p>Strong defense against XSS. Look for overly permissive policies.</p>
 
-                <h3 style="margin-top: 1.75rem;">Content-Security-Policy (CSP)</h3>
-                <p>The strongest client-side defense against XSS. Look for overly permissive policies (<code>unsafe-inline</code>, <code>unsafe-eval</code>, wildcards).</p>
-
-                <h3 style="margin-top: 1.75rem;">Strict-Transport-Security (HSTS)</h3>
-                <p>Forces HTTPS. Missing or weak HSTS allows downgrade attacks.</p>
-
-                <h3 style="margin-top: 1.75rem;">Access-Control-Allow-Origin</h3>
-                <p>Critical for CORS. Reflecting arbitrary origins while allowing credentials is a high-severity issue.</p>
-
-                <h3 style="margin-top: 1.75rem;">X-Content-Type-Options</h3>
-                <p>Should be set to <code>nosniff</code>. Prevents MIME type sniffing attacks.</p>
+                <h3 style="margin-top: 1.5rem;">Access-Control-Allow-Origin</h3>
+                <p>CORS misconfigurations are very common and often high severity.</p>
             </div>
 
-            <div class="content-block">
-                <h2>Key Takeaways</h2>
-                <ul style="margin-left: 1.2rem; color: var(--text-dim);">
-                    <li>Headers are frequently overlooked but extremely high-value for testing.</li>
-                    <li>Many access control issues stem from blindly trusting client-controlled headers.</li>
-                    <li>Security headers (CSP, HSTS, etc.) are often missing or misconfigured in real applications.</li>
-                    <li>Always check how custom or non-standard headers are handled.</li>
-                </ul>
+            <!-- QUIZ -->
+            <div class="quiz-section">
+                <h2>Module 3 Quiz</h2>
+                <p style="color: var(--text-dim); margin-bottom: 1.5rem;">Score at least 70% to unlock Module 4.</p>
+
+                <div class="quiz-question">
+                    <p><strong>1. Which header is most commonly abused for IP-based access control bypass?</strong></p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q1" value="a"> Authorization</label>
+                        <label><input type="radio" name="q1" value="b"> X-Forwarded-For</label>
+                        <label><input type="radio" name="q1" value="c"> Content-Type</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <p><strong>2. What makes a CORS misconfiguration dangerous?</strong></p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q2" value="a"> It allows JavaScript to read responses from other origins with credentials</label>
+                        <label><input type="radio" name="q2" value="b"> It makes the site load faster</label>
+                        <label><input type="radio" name="q2" value="c"> It disables authentication</label>
+                    </div>
+                </div>
+
+                <button class="btn" onclick="checkQuiz()">Submit Quiz</button>
+                <div id="quiz-result" class="quiz-result"></div>
+                <a href="module-4-status-codes.html" id="next-module-btn" class="btn next-module-btn">
+                    Complete Module & Go to Module 4 <i class="fas fa-arrow-right"></i>
+                </a>
             </div>
 
             <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border);">
                 <h3>Practice Recommendations</h3>
-                <p style="color: var(--text-dim);">Focus on these labs in PortSwigger:</p>
-                <ul style="margin-left: 1.2rem;">
-                    <li>CORS vulnerabilities</li>
-                    <li>Content Security Policy</li>
-                    <li>HTTP request smuggling (header-related cases)</li>
-                </ul>
+                <p style="color: var(--text-dim);">Focus on CORS, CSP, and cookie security labs on PortSwigger.</p>
             </div>
         </div>
     </div>
@@ -106,5 +111,39 @@
             <p>Module 3 of HTTP for Bug Hunters</p>
         </div>
     </footer>
+
+    <script>
+        function checkQuiz() {
+            const answers = { q1: 'b', q2: 'a' };
+            let score = 0;
+            const total = 2;
+
+            if (document.querySelector('input[name="q1"]:checked')?.value === answers.q1) score++;
+            if (document.querySelector('input[name="q2"]:checked')?.value === answers.q2) score++;
+
+            const result = document.getElementById('quiz-result');
+            const nextBtn = document.getElementById('next-module-btn');
+            result.style.display = 'block';
+
+            if ((score / total) >= 0.7) {
+                result.className = 'quiz-result correct';
+                result.innerHTML = `Excellent! You scored ${score}/${total}. Module 3 completed.`;
+                localStorage.setItem('module3_completed', 'true');
+                nextBtn.style.display = 'inline-flex';
+            } else {
+                result.style.background = 'rgba(239, 68, 68, 0.1)';
+                result.style.border = '1px solid #ef4444';
+                result.style.color = '#ef4444';
+                result.innerHTML = `You scored ${score}/${total}. Review and try again.`;
+                nextBtn.style.display = 'none';
+            }
+        }
+
+        window.onload = function() {
+            if (localStorage.getItem('module3_completed') === 'true') {
+                document.getElementById('next-module-btn').style.display = 'inline-flex';
+            }
+        };
+    </script>
 </body>
 </html>
