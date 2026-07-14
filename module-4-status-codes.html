@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Module 4 · Status Codes | HTTP for Bug Hunters</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌐</text></svg>">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
@@ -18,51 +19,62 @@
     </header>
 
     <div class="container section">
-        <div style="max-width: 780px; margin: 0 auto;">
+        <div style="max-width: 820px; margin: 0 auto;">
             <div class="module-number" style="margin-bottom: 1rem;">MODULE 4</div>
             <h1>Status Codes & Behavior</h1>
             <p style="font-size: 1.15rem; color: var(--text-dim); margin-bottom: 2.5rem;">
-                Status codes are not just success/failure signals. They often leak valuable information during testing.
+                HTTP status codes are not just success/failure signals. They often act as powerful oracles during testing and can leak significant information about the application.
             </p>
 
             <div class="objectives">
                 <h4>Learning Objectives</h4>
                 <ul>
-                    <li>Understand what different status code classes mean in practice</li>
-                    <li>Learn how to use status codes as oracles during testing</li>
+                    <li>Understand what different status code classes reveal in practice</li>
+                    <li>Learn how to use status codes as testing oracles</li>
                     <li>Identify information leakage through error responses</li>
+                    <li>Recognize inconsistent behavior between users/roles</li>
                 </ul>
             </div>
 
             <div class="content-block">
-                <h2>Key Status Code Classes</h2>
-                
-                <h3>2xx - Success</h3>
-                <p>200, 201, 204 are common. Inconsistent behavior between users can reveal access control issues.</p>
+                <h2>Status Code Classes & Security Relevance</h2>
 
-                <h3>3xx - Redirection</h3>
-                <p>Open redirect vulnerabilities often live here. Also check if sensitive headers are sent to third parties.</p>
+                <h3 style="margin-top: 1.75rem;">2xx Success</h3>
+                <p>200, 201, 204 are the most common. Inconsistent responses between different privilege levels often reveal access control issues.</p>
 
-                <h3>4xx - Client Errors</h3>
-                <p>400, 401, 403, 404. Differences in responses between valid/invalid users can lead to user enumeration or IDOR confirmation.</p>
+                <h3 style="margin-top: 1.75rem;">3xx Redirection</h3>
+                <p>Open redirect vulnerabilities frequently live here. Also check whether sensitive headers (cookies, Authorization) are sent to third-party domains.</p>
 
-                <h3>5xx - Server Errors</h3>
-                <p>Stack traces, internal paths, and framework versions are frequently leaked here. Goldmine for reconnaissance.</p>
+                <h3 style="margin-top: 1.75rem;">4xx Client Errors</h3>
+                <p>400, 401, 403, 404, 422. Differences in responses (timing, content, status) between valid and invalid users can confirm the existence of resources or bypass authorization.</p>
+
+                <h3 style="margin-top: 1.75rem;">5xx Server Errors</h3>
+                <p>These are goldmines. Stack traces, internal paths, framework versions, and database errors are frequently leaked.</p>
             </div>
 
             <div class="content-block">
-                <h2>Practical Testing Tips</h2>
+                <h2>Practical Testing Techniques</h2>
                 <ul style="margin-left: 1.2rem; color: var(--text-dim);">
-                    <li>Compare responses for the same request as different users.</li>
-                    <li>Send malformed input and observe error messages.</li>
-                    <li>Look for timing differences that can act as oracles.</li>
-                    <li>Never ignore 5xx responses during testing.</li>
+                    <li>Compare responses for the same request as different users/roles.</li>
+                    <li>Send malformed or unexpected input and carefully analyze error messages.</li>
+                    <li>Use timing differences as oracles (e.g., 404 vs 403 response times).</li>
+                    <li>Never ignore 5xx responses — they often reveal internal implementation details.</li>
+                </ul>
+            </div>
+
+            <div class="content-block">
+                <h2>Key Takeaways</h2>
+                <ul style="margin-left: 1.2rem; color: var(--text-dim);">
+                    <li>Status codes can act as powerful information oracles.</li>
+                    <li>Inconsistent behavior between users is often a sign of access control problems.</li>
+                    <li>Error responses frequently leak sensitive internal information.</li>
+                    <li>Always analyze both the status code and the full response body/headers.</li>
                 </ul>
             </div>
 
             <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border);">
                 <h3>Practice Recommendations</h3>
-                <p style="color: var(--text-dim);">Error handling and information disclosure labs on PortSwigger are excellent for this module.</p>
+                <p style="color: var(--text-dim);">Work on error handling and information disclosure labs in PortSwigger.</p>
             </div>
         </div>
     </div>
