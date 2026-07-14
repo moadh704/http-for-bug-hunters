@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Module 2 · HTTP Methods | HTTP for Bug Hunters</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌐</text></svg>">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
@@ -18,72 +19,104 @@
     </header>
 
     <div class="container section">
-        <div style="max-width: 780px; margin: 0 auto;">
+        <div style="max-width: 820px; margin: 0 auto;">
             <div class="module-number" style="margin-bottom: 1rem;">MODULE 2</div>
             <h1>HTTP Methods Deep Dive</h1>
             <p style="font-size: 1.15rem; color: var(--text-dim); margin-bottom: 2.5rem;">
-                Understanding HTTP methods is fundamental to finding many authorization and business logic vulnerabilities.
+                HTTP methods define the intent of a request. Misunderstanding or misusing them is one of the most common sources of authorization bypasses and business logic vulnerabilities.
             </p>
 
             <div class="objectives">
                 <h4>Learning Objectives</h4>
                 <ul>
-                    <li>Know the purpose and expected behavior of common HTTP methods</li>
-                    <li>Understand which methods are idempotent and why it matters</li>
-                    <li>Learn how to test methods for security issues</li>
-                    <li>Identify when applications misuse HTTP methods</li>
+                    <li>Understand the semantic meaning and security implications of each HTTP method</li>
+                    <li>Know the difference between safe, idempotent, and unsafe methods</li>
+                    <li>Learn how to test method-related vulnerabilities effectively</li>
+                    <li>Identify when applications accept unexpected methods</li>
                 </ul>
             </div>
 
             <div class="content-block">
-                <h2>Core HTTP Methods</h2>
-                
-                <h3 style="margin-top: 1.75rem;">GET</h3>
-                <p>Used to retrieve resources. Should be safe and idempotent. Parameters usually go in the URL.</p>
-                <p><strong>Common Issues:</strong> IDOR via ID manipulation, sensitive data in query parameters, SSRF through URL parameters.</p>
+                <h2>Understanding HTTP Methods</h2>
+                <p>HTTP methods indicate the desired action to be performed on a resource. The most important ones for security testing are:</p>
 
-                <h3 style="margin-top: 1.75rem;">POST</h3>
-                <p>Used to submit data or trigger actions. Not idempotent by default.</p>
-                <p><strong>Common Issues:</strong> CSRF, mass assignment, lack of rate limiting, business logic flaws.</p>
-
-                <h3 style="margin-top: 1.75rem;">PUT</h3>
-                <p>Used to replace a resource entirely. Should be idempotent.</p>
-                <p><strong>Common Issues:</strong> Missing authorization checks, mass assignment of fields.</p>
-
-                <h3 style="margin-top: 1.75rem;">PATCH</h3>
-                <p>Used for partial updates. Often implemented later and less strictly validated.</p>
-                <p><strong>Common Issues:</strong> Mass assignment, weaker authorization than PUT endpoints.</p>
-
-                <h3 style="margin-top: 1.75rem;">DELETE</h3>
-                <p>Used to remove resources. High impact if authorization is weak.</p>
-                <p><strong>Common Issues:</strong> Horizontal/vertical privilege escalation through missing ownership checks.</p>
-            </div>
-
-            <div class="content-block">
-                <h2>Security Testing Approach</h2>
-                <p>For every endpoint you test, ask:</p>
+                <h3 style="margin-top: 2rem;">GET</h3>
+                <p>Retrieves data. Should be <strong>safe</strong> (no side effects) and <strong>idempotent</strong> (repeating it produces the same result).</p>
+                <p><strong>Common Vulnerabilities:</strong></p>
                 <ul style="margin-left: 1.2rem; color: var(--text-dim);">
-                    <li>What method is documented vs what actually works?</li>
-                    <li>Can I use a different method to bypass controls?</li>
-                    <li>Does the method behave idempotently as expected?</li>
-                    <li>Are there undocumented methods accepted?</li>
+                    <li>IDOR by changing IDs in the URL</li>
+                    <li>Sensitive data exposure in query parameters (logged in proxies, browser history, Referer headers)</li>
+                    <li>SSRF when the application fetches URLs from GET parameters</li>
                 </ul>
+
+                <h3 style="margin-top: 2rem;">POST</h3>
+                <p>Submits data to create or trigger actions. Not idempotent by default.</p>
+                <p><strong>Common Vulnerabilities:</strong></p>
+                <ul style="margin-left: 1.2rem; color: var(--text-dim);">
+                    <li>CSRF on state-changing actions</li>
+                    <li>Mass assignment (adding unexpected fields)</li>
+                    <li>Business logic flaws (price manipulation, workflow bypass)</li>
+                    <li>Lack of rate limiting on sensitive endpoints</li>
+                </ul>
+
+                <h3 style="margin-top: 2rem;">PUT</h3>
+                <p>Replaces an entire resource. Should be idempotent.</p>
+                <p><strong>Common Vulnerabilities:</strong></p>
+                <ul style="margin-left: 1.2rem; color: var(--text-dim);">
+                    <li>Weak or missing ownership checks</li>
+                    <li>Mass assignment of fields the UI never exposes</li>
+                    <li>Overwriting resources belonging to other users</li>
+                </ul>
+
+                <h3 style="margin-top: 2rem;">PATCH</h3>
+                <p>Partial update to a resource. Often implemented later and validated less strictly than PUT.</p>
+                <p><strong>Common Vulnerabilities:</strong></p>
+                <ul style="margin-left: 1.2rem; color: var(--text-dim);">
+                    <li>Mass assignment</li>
+                    <li>Weaker authorization than equivalent PUT endpoints</li>
+                    <li>Logic flaws in partial updates</li>
+                </ul>
+
+                <h3 style="margin-top: 2rem;">DELETE</h3>
+                <p>Removes a resource. High-risk method.</p>
+                <p><strong>Common Vulnerabilities:</strong></p>
+                <ul style="margin-left: 1.2rem; color: var(--text-dim);">
+                    <li>Missing authorization / ownership checks</li>
+                    <li>Ability to delete other users' resources</li>
+                    <li>Soft delete bypasses</li>
+                </ul>
+            </div>
+
+            <div class="content-block">
+                <h2>Security Testing Methodology</h2>
+                <p>When testing any endpoint, always ask these questions:</p>
+                <ul style="margin-left: 1.2rem; color: var(--text-dim);">
+                    <li>What methods does the endpoint actually accept?</li>
+                    <li>Can I bypass controls by using a different method?</li>
+                    <li>Does the application properly enforce authorization for each method?</li>
+                    <li>Are there undocumented methods that work?</li>
+                </ul>
+
+                <p><strong>Pro Tip:</strong> Use tools like Burp Suite's Repeater or ffuf to quickly test different methods against the same endpoint.</p>
             </div>
 
             <div class="content-block">
                 <h2>Key Takeaways</h2>
                 <ul style="margin-left: 1.2rem; color: var(--text-dim);">
-                    <li>Never assume only documented methods are accepted.</li>
-                    <li>PUT and PATCH are often less protected than POST.</li>
-                    <li>DELETE endpoints frequently have weak authorization.</li>
-                    <li>Testing method swapping is a quick and high-value technique.</li>
+                    <li>Never trust that only documented methods are accepted.</li>
+                    <li>PUT and PATCH endpoints are frequently less protected than POST.</li>
+                    <li>DELETE is high impact — always test authorization thoroughly.</li>
+                    <li>Method swapping is a fast and high-value testing technique.</li>
                 </ul>
             </div>
 
             <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border);">
                 <h3>Practice Recommendations</h3>
+                <p style="color: var(--text-dim);">Focus on these areas in PortSwigger Web Security Academy:</p>
                 <ul style="margin-left: 1.2rem;">
-                    <li>PortSwigger: HTTP methods labs and access control vulnerabilities</li>
+                    <li>HTTP methods labs</li>
+                    <li>Access control vulnerabilities</li>
+                    <li>Business logic flaws</li>
                 </ul>
             </div>
         </div>
