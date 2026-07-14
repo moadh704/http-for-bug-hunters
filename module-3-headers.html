@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Module 3 · Headers Mastery | HTTP for Bug Hunters</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌐</text></svg>">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
@@ -18,58 +19,84 @@
     </header>
 
     <div class="container section">
-        <div style="max-width: 780px; margin: 0 auto;">
+        <div style="max-width: 820px; margin: 0 auto;">
             <div class="module-number" style="margin-bottom: 1rem;">MODULE 3</div>
             <h1>Headers Mastery</h1>
             <p style="font-size: 1.15rem; color: var(--text-dim); margin-bottom: 2.5rem;">
-                Headers are one of the richest areas for finding security issues. Many vulnerabilities hide in how headers are handled or ignored.
+                HTTP headers carry critical metadata. Many serious vulnerabilities (CORS misconfigurations, cache poisoning, authentication bypasses, XSS, etc.) live in how headers are processed or ignored.
             </p>
 
             <div class="objectives">
                 <h4>Learning Objectives</h4>
                 <ul>
-                    <li>Understand key request and response headers</li>
-                    <li>Know which headers have security implications</li>
-                    <li>Learn how to test header-related vulnerabilities</li>
-                    <li>Identify misconfigurations in security headers</li>
+                    <li>Understand the security implications of key request and response headers</li>
+                    <li>Learn how to test for header-related vulnerabilities</li>
+                    <li>Identify common misconfigurations in security headers</li>
+                    <li>Recognize when applications trust client-controlled headers unsafely</li>
                 </ul>
             </div>
 
             <div class="content-block">
                 <h2>Important Request Headers</h2>
-                <ul style="margin-left: 1.2rem; color: var(--text-dim);">
-                    <li><strong>Authorization</strong> — Tokens, API keys. Look for weak tokens, missing expiry, or leakage.</li>
-                    <li><strong>Cookie</strong> — Session management. Check Secure, HttpOnly, SameSite flags on responses.</li>
-                    <li><strong>Content-Type</strong> — Can sometimes be manipulated to reach different code paths.</li>
-                    <li><strong>X-Forwarded-For / X-Real-IP</strong> — Often spoofable. Dangerous if used for access control.</li>
-                    <li><strong>Origin / Referer</strong> — Important for CORS and CSRF testing.</li>
-                </ul>
+
+                <h3 style="margin-top: 1.75rem;">Authorization</h3>
+                <p>Carries authentication credentials (Bearer tokens, API keys, Basic auth, etc.).</p>
+                <p><strong>Testing Focus:</strong> Weak or predictable tokens, missing token expiry, token leakage in logs or Referer headers, algorithm confusion in JWTs.</p>
+
+                <h3 style="margin-top: 1.75rem;">Cookie</h3>
+                <p>Used for session management. The real security is usually enforced on the corresponding <code>Set-Cookie</code> response header.</p>
+                <p><strong>Testing Focus:</strong> Missing <code>Secure</code>, <code>HttpOnly</code>, or <code>SameSite</code> flags.</p>
+
+                <h3 style="margin-top: 1.75rem;">Content-Type</h3>
+                <p>Tells the server how to parse the body. Changing this can sometimes reach different (less validated) code paths.</p>
+                <p><strong>Testing Focus:</strong> Content-Type confusion attacks, reaching XML/JSON parsers unexpectedly.</p>
+
+                <h3 style="margin-top: 1.75rem;">X-Forwarded-For / X-Real-IP / X-Forwarded-Host</h3>
+                <p>Commonly used behind proxies. These headers are trivial to spoof.</p>
+                <p><strong>Testing Focus:</strong> IP-based access control bypass, password reset poisoning, rate limit bypass.</p>
+
+                <h3 style="margin-top: 1.75rem;">Origin & Referer</h3>
+                <p>Important for CORS and CSRF protection mechanisms.</p>
+                <p><strong>Testing Focus:</strong> CORS misconfigurations, Referer-based CSRF protection bypass.</p>
             </div>
 
             <div class="content-block">
                 <h2>Important Response Headers</h2>
-                <ul style="margin-left: 1.2rem; color: var(--text-dim);">
-                    <li><strong>Set-Cookie</strong> — Session security flags.</li>
-                    <li><strong>Content-Security-Policy (CSP)</strong> — Critical for XSS prevention.</li>
-                    <li><strong>Strict-Transport-Security (HSTS)</strong> — Prevents downgrade attacks.</li>
-                    <li><strong>X-Content-Type-Options</strong> — Should be nosniff.</li>
-                    <li><strong>Access-Control-Allow-Origin</strong> — CORS misconfigurations are very common.</li>
-                </ul>
+
+                <h3 style="margin-top: 1.75rem;">Set-Cookie</h3>
+                <p>Controls session security. Missing flags are very common findings.</p>
+
+                <h3 style="margin-top: 1.75rem;">Content-Security-Policy (CSP)</h3>
+                <p>The strongest client-side defense against XSS. Look for overly permissive policies (<code>unsafe-inline</code>, <code>unsafe-eval</code>, wildcards).</p>
+
+                <h3 style="margin-top: 1.75rem;">Strict-Transport-Security (HSTS)</h3>
+                <p>Forces HTTPS. Missing or weak HSTS allows downgrade attacks.</p>
+
+                <h3 style="margin-top: 1.75rem;">Access-Control-Allow-Origin</h3>
+                <p>Critical for CORS. Reflecting arbitrary origins while allowing credentials is a high-severity issue.</p>
+
+                <h3 style="margin-top: 1.75rem;">X-Content-Type-Options</h3>
+                <p>Should be set to <code>nosniff</code>. Prevents MIME type sniffing attacks.</p>
             </div>
 
             <div class="content-block">
                 <h2>Key Takeaways</h2>
                 <ul style="margin-left: 1.2rem; color: var(--text-dim);">
-                    <li>Headers are often overlooked during testing.</li>
-                    <li>Many access control issues come from trusting client-controlled headers.</li>
-                    <li>Security headers are frequently missing or misconfigured.</li>
-                    <li>Always check how custom headers are handled by the application.</li>
+                    <li>Headers are frequently overlooked but extremely high-value for testing.</li>
+                    <li>Many access control issues stem from blindly trusting client-controlled headers.</li>
+                    <li>Security headers (CSP, HSTS, etc.) are often missing or misconfigured in real applications.</li>
+                    <li>Always check how custom or non-standard headers are handled.</li>
                 </ul>
             </div>
 
             <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border);">
                 <h3>Practice Recommendations</h3>
-                <p style="color: var(--text-dim);">Focus on CORS, CSP, and cookie security labs on PortSwigger.</p>
+                <p style="color: var(--text-dim);">Focus on these labs in PortSwigger:</p>
+                <ul style="margin-left: 1.2rem;">
+                    <li>CORS vulnerabilities</li>
+                    <li>Content Security Policy</li>
+                    <li>HTTP request smuggling (header-related cases)</li>
+                </ul>
             </div>
         </div>
     </div>
