@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 3 · Headers Mastery | HTTP for Bug Hunters</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <a href="index.html" class="logo">HTTP for Bug Hunters</a>
+                <a href="index.html" class="btn btn-secondary" style="padding:0.55rem 1.1rem; font-size:0.85rem;">Back to Learning Path</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container section">
+        <div style="max-width: 780px; margin: 0 auto;">
+            <div class="module-number" style="margin-bottom: 1rem;">MODULE 3</div>
+            <h1>Headers Mastery</h1>
+            <p style="font-size: 1.15rem; color: var(--text-dim); margin-bottom: 2.5rem;">
+                Headers are one of the richest areas for finding security issues. Many vulnerabilities hide in how headers are handled or ignored.
+            </p>
+
+            <div class="objectives">
+                <h4>Learning Objectives</h4>
+                <ul>
+                    <li>Understand key request and response headers</li>
+                    <li>Know which headers have security implications</li>
+                    <li>Learn how to test header-related vulnerabilities</li>
+                    <li>Identify misconfigurations in security headers</li>
+                </ul>
+            </div>
+
+            <div class="content-block">
+                <h2>Important Request Headers</h2>
+                <ul style="margin-left: 1.2rem; color: var(--text-dim);">
+                    <li><strong>Authorization</strong> — Tokens, API keys. Look for weak tokens, missing expiry, or leakage.</li>
+                    <li><strong>Cookie</strong> — Session management. Check Secure, HttpOnly, SameSite flags on responses.</li>
+                    <li><strong>Content-Type</strong> — Can sometimes be manipulated to reach different code paths.</li>
+                    <li><strong>X-Forwarded-For / X-Real-IP</strong> — Often spoofable. Dangerous if used for access control.</li>
+                    <li><strong>Origin / Referer</strong> — Important for CORS and CSRF testing.</li>
+                </ul>
+            </div>
+
+            <div class="content-block">
+                <h2>Important Response Headers</h2>
+                <ul style="margin-left: 1.2rem; color: var(--text-dim);">
+                    <li><strong>Set-Cookie</strong> — Session security flags.</li>
+                    <li><strong>Content-Security-Policy (CSP)</strong> — Critical for XSS prevention.</li>
+                    <li><strong>Strict-Transport-Security (HSTS)</strong> — Prevents downgrade attacks.</li>
+                    <li><strong>X-Content-Type-Options</strong> — Should be nosniff.</li>
+                    <li><strong>Access-Control-Allow-Origin</strong> — CORS misconfigurations are very common.</li>
+                </ul>
+            </div>
+
+            <div class="content-block">
+                <h2>Key Takeaways</h2>
+                <ul style="margin-left: 1.2rem; color: var(--text-dim);">
+                    <li>Headers are often overlooked during testing.</li>
+                    <li>Many access control issues come from trusting client-controlled headers.</li>
+                    <li>Security headers are frequently missing or misconfigured.</li>
+                    <li>Always check how custom headers are handled by the application.</li>
+                </ul>
+            </div>
+
+            <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border);">
+                <h3>Practice Recommendations</h3>
+                <p style="color: var(--text-dim);">Focus on CORS, CSP, and cookie security labs on PortSwigger.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>Module 3 of HTTP for Bug Hunters</p>
+        </div>
+    </footer>
+</body>
+</html>
