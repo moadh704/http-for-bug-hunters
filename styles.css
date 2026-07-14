@@ -1,0 +1,225 @@
+/* ============================================================
+   HTTP for Bug Hunters - High Quality Styles
+   ============================================================ */
+
+:root {
+    --bg: #0f1117;
+    --bg-secondary: #161a23;
+    --panel: #1a1f2e;
+    --panel-2: #22283a;
+    --border: #2a3144;
+    --text: #e8eaf0;
+    --text-dim: #9aa0b0;
+    --text-faint: #6b7280;
+    --accent: #00d4c8;
+    --accent-hover: #00b8a8;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --radius: 10px;
+    --radius-sm: 6px;
+    --shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.7;
+    font-size: 16px;
+}
+
+.container {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+/* Typography */
+h1, h2, h3, h4 {
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--text);
+}
+
+h1 { font-size: 2.8rem; }
+h2 { font-size: 2rem; margin-bottom: 1.25rem; }
+h3 { font-size: 1.35rem; margin-bottom: 0.75rem; }
+h4 { font-size: 1.1rem; margin-bottom: 0.5rem; }
+
+p {
+    color: var(--text-dim);
+    margin-bottom: 1rem;
+}
+
+/* Navigation */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem 0;
+}
+
+.logo {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--accent);
+    text-decoration: none;
+}
+
+/* Hero */
+.hero {
+    padding: 5rem 0 3.5rem;
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 3.4rem;
+    line-height: 1.15;
+    margin-bottom: 1.25rem;
+}
+
+.hero-subtitle {
+    font-size: 1.25rem;
+    color: var(--text-dim);
+    max-width: 620px;
+    margin: 0 auto 2.5rem;
+}
+
+/* Buttons */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background-color: var(--accent);
+    color: #0f1117;
+    padding: 0.85rem 1.85rem;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+}
+
+.btn:hover {
+    background-color: var(--accent-hover);
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+}
+
+.btn-secondary:hover {
+    background-color: var(--panel-2);
+    border-color: var(--accent);
+}
+
+/* Cards & Modules */
+.card, .module {
+    background-color: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.75rem;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.module:hover {
+    border-color: var(--accent);
+    transform: translateY(-3px);
+}
+
+.module-number {
+    display: inline-block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--accent);
+    background-color: rgba(0, 212, 200, 0.1);
+    padding: 0.25rem 0.65rem;
+    border-radius: 999px;
+    margin-bottom: 0.85rem;
+}
+
+/* Grid */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Section */
+.section {
+    padding: 4rem 0;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+/* Learning Objectives */
+.objectives {
+    background-color: var(--panel-2);
+    border-left: 4px solid var(--accent);
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    margin: 2rem 0;
+}
+
+.objectives h4 {
+    color: var(--accent);
+    margin-bottom: 1rem;
+}
+
+.objectives ul {
+    list-style: none;
+}
+
+.objectives li {
+    padding: 0.35rem 0;
+    color: var(--text-dim);
+}
+
+.objectives li::before {
+    content: "\2713";
+    color: var(--accent);
+    margin-right: 0.6rem;
+}
+
+/* Content Blocks */
+.content-block {
+    margin-bottom: 2.5rem;
+}
+
+.highlight {
+    background-color: var(--panel-2);
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+}
+
+/* Footer */
+footer {
+    padding: 3rem 0;
+    text-align: center;
+    color: var(--text-faint);
+    font-size: 0.9rem;
+    border-top: 1px solid var(--border);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    h1 { font-size: 2.4rem; }
+    .hero { padding: 3.5rem 0 2.5rem; }
+    .grid {
+        grid-template-columns: 1fr;
+    }
+}
