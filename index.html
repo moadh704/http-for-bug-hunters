@@ -8,6 +8,33 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌐</text></svg>">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .star-section {
+            text-align: center;
+            margin-top: 2rem;
+        }
+        .star-count {
+            font-size: 1.1rem;
+            color: var(--text-dim);
+            margin-bottom: 0.75rem;
+        }
+        .star-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: #24292e;
+            color: white;
+            padding: 0.85rem 1.8rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+        .star-btn:hover {
+            background: #1b1f23;
+            transform: translateY(-2px);
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -31,17 +58,26 @@
                 A structured learning resource that teaches HTTP internals with a security-first mindset. 
                 Built for bug bounty hunters, pentesters, and security researchers.
             </p>
+
             <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; align-items: center;">
                 <a href="module-1-fundamentals.html" class="btn">
                     Start Learning <i class="fas fa-arrow-right"></i>
                 </a>
-                <a href="https://github.com/moadh704/http-for-bug-hunters" target="_blank" class="btn btn-secondary">
-                    <i class="fab fa-github"></i> Star on GitHub
-                </a>
             </div>
-            <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-faint);">
-                If you find this useful, consider giving it a ⭐ on GitHub
-            </p>
+
+            <!-- Star Section with Live Count -->
+            <div class="star-section">
+                <div class="star-count" id="star-count">
+                    <i class="fas fa-star" style="color: #f1c40f; margin-right: 6px;"></i> Loading stars...
+                </div>
+                <a href="https://github.com/moadh704/http-for-bug-hunters" target="_blank" class="star-btn">
+                    <i class="fab fa-github"></i>
+                    <span>Star on GitHub</span>
+                </a>
+                <p style="margin-top: 0.6rem; font-size: 0.85rem; color: var(--text-faint);">
+                    If this project helps you, consider giving it a star ❤️
+                </p>
+            </div>
         </div>
     </div>
 
@@ -123,9 +159,32 @@
         <div class="container">
             <p>Built with care for people who want to truly understand HTTP for security testing.</p>
             <p style="margin-top: 0.5rem; font-size: 0.85rem;">
-                <a href="https://github.com/moadh704/http-for-bug-hunters" target="_blank" style="color: var(--accent); text-decoration: none;">⭐ Star on GitHub</a>
+                <a href="https://github.com/moadh704/http-for-bug-hunters" target="_blank" style="color: var(--accent); text-decoration: none;">View on GitHub</a>
             </p>
         </div>
     </footer>
+
+    <script>
+        // Fetch live star count from GitHub API
+        async function fetchStarCount() {
+            try {
+                const response = await fetch('https://api.github.com/repos/moadh704/http-for-bug-hunters');
+                if (!response.ok) throw new Error('Failed to fetch');
+                
+                const data = await response.json();
+                const starCount = data.stargazers_count || 0;
+                
+                document.getElementById('star-count').innerHTML = 
+                    `<i class="fas fa-star" style="color: #f1c40f; margin-right: 6px;"></i> ${starCount} stars on GitHub`;
+            } catch (error) {
+                document.getElementById('star-count').innerHTML = 
+                    `<i class="fas fa-star" style="color: #f1c40f; margin-right: 6px;"></i> Star this project`;
+            }
+        }
+
+        window.onload = function() {
+            fetchStarCount();
+        };
+    </script>
 </body>
 </html>
