@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Where messages break · HTTP Field Notes</title>
+  <meta name="description" content="A field manual for reading HTTP the way a bug hunter does.">
+  <meta name="theme-color" content="#14160f">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+</head>
+<body>
+  <header class="top">
+    <div class="bar">
+      <a class="brand" href="index.html"><span>HTTP</span> Field Notes</a>
+      <a class="source" href="https://github.com/moadh704/http-for-bug-hunters">Source</a>
+    </div>
+    <nav class="pills"><a class="pill" href="index.html">Path</a><a class="pill" href="bench.html">Wire bench</a><a class="pill" href="fundamentals.html">01</a><a class="pill" href="methods.html">02</a><a class="pill" href="headers.html">03</a><a class="pill" href="status.html">04</a><a class="pill" href="signals.html">05</a><a class="pill on" href="advanced.html">06</a><a class="pill" href="practice.html">07</a></nav>
+  </header>
+  <main>
+      <p class="kicker">Module 06</p>
+      <h1>Where messages break</h1>
+      <p class="lede">Smuggling, cache poisoning, and downgrade bugs are the same story: two readers, one byte stream, two opinions.</p>
+      <section class="block">
+            <h2>Length versus chunks</h2>
+            <p>HTTP/1.1 can size a body with Content-Length or with chunked Transfer-Encoding. A request that carries both asks two questions. If the front parser answers one and the back parser answers the other, the leftover bytes become the start of the next user's request.</p><p>You do not need a working desync to understand the report. You need to say which hop used which length, and what the leftover bytes were. Build that on a lab that documents smuggling. Do not run it against a customer you have not been told to test.</p>
+            
+            
+          </section><section class="block">
+            <h2>Cache keys are a second request</h2>
+            <p>A cache stores a response under a key, usually the method, host, and path, plus whatever Vary adds. If the body depends on a header that is not in the key, the first response is served to everyone. Unkeyed headers and unkeyed query parameters are the things you inventory.</p><p>Poisoning means you can choose the body that gets stored. Deception means you can choose a path the cache thinks is static and the app thinks is private. Both are header and key problems, not payload problems.</p>
+            
+            
+          </section><section class="block">
+            <h2>The upgrade and the socket</h2>
+            <p>A WebSocket starts as an HTTP request with Upgrade: websocket and a 101 response. After that the bytes are no longer HTTP. If an access check only exists on the HTTP route and not on the upgraded socket, the check ended at the handshake.</p><p>HTTP/2 and HTTP/3 change framing again. When a lab asks you to downgrade, it is asking you to watch the translation, the same skill as module 01.</p>
+            
+            <p class="note">JWT in an Authorization header is still just a header. Decoding the middle segment is base64, not an attack. Trust starts where the server checks the signature.</p>
+          </section>
+      
+      <section class="block quiz" data-slug="advanced">
+    <h2>Check yourself</h2>
+    <p class="mute">Three questions. Nothing unlocks. A pass is just a mark in this browser so you know you read it.</p>
+    <ol class="qs">
+      <li class="q" data-answer="0">
+            <p class="qprompt">Request smuggling requires</p>
+            <div class="choices">
+              <button type="button" data-i="0">Two parsers that disagree about the message boundary</button><button type="button" data-i="1">A missing favicon</button><button type="button" data-i="2">HTTP/3 only</button><button type="button" data-i="3">A password of a specific length</button>
+            </div>
+            <p class="why" hidden>One hop ends the message in a different place than the next. The leftover bytes are prefixed onto another request.</p>
+          </li><li class="q" data-answer="1">
+            <p class="qprompt">A cache poisoning bug is mainly about</p>
+            <div class="choices">
+              <button type="button" data-i="0">The color of the status badge</button><button type="button" data-i="1">A response body that depends on input the cache key ignores</button><button type="button" data-i="2">Forcing TLS 1.0</button><button type="button" data-i="3">Deleting the Host header only</button>
+            </div>
+            <p class="why" hidden>If you control an unkeyed input and the cache stores the result, later visitors receive your response.</p>
+          </li><li class="q" data-answer="1">
+            <p class="qprompt">After a WebSocket 101,</p>
+            <div class="choices">
+              <button type="button" data-i="0">The connection stays on normal HTTP request framing</button><button type="button" data-i="1">Later frames are not HTTP requests, so HTTP-only checks no longer run per message</button><button type="button" data-i="2">Cookies are wiped</button><button type="button" data-i="3">The method becomes GET forever</button>
+            </div>
+            <p class="why" hidden>The handshake is the last HTTP message. Authorization that is not repeated inside the protocol is not repeated at all.</p>
+          </li>
+    </ol>
+    <button type="button" class="btn grade">Grade this module</button>
+  </section>
+      <div class="pager">
+        <a href="signals.html">05 What to notice</a>
+        <a class="next" href="practice.html">Next: Practice</a>
+      </div></main>
+  <script src="data.js"></script>
+  <script src="site.js"></script>
+  
+</body>
+</html>

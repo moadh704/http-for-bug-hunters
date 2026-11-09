@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The message · HTTP Field Notes</title>
+  <meta name="description" content="A field manual for reading HTTP the way a bug hunter does.">
+  <meta name="theme-color" content="#14160f">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+</head>
+<body>
+  <header class="top">
+    <div class="bar">
+      <a class="brand" href="index.html"><span>HTTP</span> Field Notes</a>
+      <a class="source" href="https://github.com/moadh704/http-for-bug-hunters">Source</a>
+    </div>
+    <nav class="pills"><a class="pill" href="index.html">Path</a><a class="pill" href="bench.html">Wire bench</a><a class="pill on" href="fundamentals.html">01</a><a class="pill" href="methods.html">02</a><a class="pill" href="headers.html">03</a><a class="pill" href="status.html">04</a><a class="pill" href="signals.html">05</a><a class="pill" href="advanced.html">06</a><a class="pill" href="practice.html">07</a></nav>
+  </header>
+  <main>
+      <p class="kicker">Module 01</p>
+      <h1>The message</h1>
+      <p class="lede">HTTP is a conversation of messages, not pages. If you can read one request and one response on the wire, every later bug class gets quieter.</p>
+      <section class="block">
+            <h2>One transaction</h2>
+            <p>A client opens a connection and sends a request. The server sends one response. HTTP/1.1 then usually keeps the socket open for the next message. That reuse is why the end of one message has to be unambiguous.</p><p>If two parsers disagree about where a message ends, the next bytes belong to a different request than you think. That single fact is the root of request smuggling. You do not need a payload yet. You need to see the boundary.</p>
+            <pre>POST /login HTTP/1.1
+Host: app.example
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 27
+
+user=ada&amp;password=hunter2</pre>
+            <p class="note">The blank line is the boundary. Everything after it is body, and Content-Length says how many bytes that body is.</p>
+          </section><section class="block">
+            <h2>Three parts, different jobs</h2>
+            <p>The start line names the method, the target, and the version. Headers are the control plane: who the request is for, how long the body is, which cookies ride along, whether a cache may store the result. The body is optional and only means something because a header said how to read it.</p><p>Hunters read headers before they read the body. A 200 with a surprising Content-Type, a missing Content-Length, or a Host you did not type is more interesting than the HTML inside.</p>
+            
+            
+          </section><section class="block">
+            <h2>Text on the wire, frames after the proxy</h2>
+            <p>What you type in a repeater is usually HTTP/1.1 text. Between the browser and the edge, and between the edge and the app, the same request may be HTTP/2 frames. The method, path, and headers survive. The framing does not.</p><p>That translation is where desync bugs live. One hop trusts Content-Length. The next trusts chunked framing. Your job in a lab is to notice two parsers, not to memorize a cheat sheet of bytes.</p>
+            
+            <p class="note">Practice this on a local proxy and a lab you are allowed to test. Do not point a smuggling proof at a site you do not own.</p>
+          </section>
+      
+      <section class="block quiz" data-slug="fundamentals">
+    <h2>Check yourself</h2>
+    <p class="mute">Three questions. Nothing unlocks. A pass is just a mark in this browser so you know you read it.</p>
+    <ol class="qs">
+      <li class="q" data-answer="1">
+            <p class="qprompt">Where does an HTTP/1.1 header block end?</p>
+            <div class="choices">
+              <button type="button" data-i="0">At the first space</button><button type="button" data-i="1">At the blank line before the body</button><button type="button" data-i="2">At the Content-Type value</button><button type="button" data-i="3">At the status code</button>
+            </div>
+            <p class="why" hidden>Headers end at the blank line (CRLF CRLF). The body, if any, starts after that.</p>
+          </li><li class="q" data-answer="1">
+            <p class="qprompt">Why does Content-Length matter to a hunter?</p>
+            <div class="choices">
+              <button type="button" data-i="0">It sets the cookie domain</button><button type="button" data-i="1">It tells a parser how many body bytes belong to this message</button><button type="button" data-i="2">It chooses HTTP/2</button><button type="button" data-i="3">It replaces the Host header</button>
+            </div>
+            <p class="why" hidden>The length is the message boundary. A second parser that ignores it will attach the leftover bytes to the next request.</p>
+          </li><li class="q" data-answer="1">
+            <p class="qprompt">What usually changes when a proxy turns HTTP/2 into HTTP/1.1?</p>
+            <div class="choices">
+              <button type="button" data-i="0">The password in the body</button><button type="button" data-i="1">The framing, not the meaning of the headers</button><button type="button" data-i="2">The TLS certificate of the user</button><button type="button" data-i="3">Nothing. The bytes are copied</button>
+            </div>
+            <p class="why" hidden>Method, path, and headers are preserved. The way the message is framed is rewritten, and that rewrite is where disagreement starts.</p>
+          </li>
+    </ol>
+    <button type="button" class="btn grade">Grade this module</button>
+  </section>
+      <div class="pager">
+        <span></span>
+        <a class="next" href="methods.html">Next: Methods</a>
+      </div></main>
+  <script src="data.js"></script>
+  <script src="site.js"></script>
+  
+</body>
+</html>

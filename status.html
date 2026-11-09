@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Status codes · HTTP Field Notes</title>
+  <meta name="description" content="A field manual for reading HTTP the way a bug hunter does.">
+  <meta name="theme-color" content="#14160f">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+</head>
+<body>
+  <header class="top">
+    <div class="bar">
+      <a class="brand" href="index.html"><span>HTTP</span> Field Notes</a>
+      <a class="source" href="https://github.com/moadh704/http-for-bug-hunters">Source</a>
+    </div>
+    <nav class="pills"><a class="pill" href="index.html">Path</a><a class="pill" href="bench.html">Wire bench</a><a class="pill" href="fundamentals.html">01</a><a class="pill" href="methods.html">02</a><a class="pill" href="headers.html">03</a><a class="pill on" href="status.html">04</a><a class="pill" href="signals.html">05</a><a class="pill" href="advanced.html">06</a><a class="pill" href="practice.html">07</a></nav>
+  </header>
+  <main>
+      <p class="kicker">Module 04</p>
+      <h1>Status codes</h1>
+      <p class="lede">The status line is the server's one-sentence opinion. Compare it to the body. They often disagree, and the disagreement is the bug.</p>
+      <section class="block">
+            <h2>2xx is not a clean bill</h2>
+            <p>200 means the server produced a response it is willing to call successful. It does not mean you were authorized, and it does not mean the action was a no-op. GraphQL and some JSON APIs return 200 with an errors array. Always read the body when the status looks too calm.</p><p>204 and 304 are interesting because they have no body. A 304 that still updates a cache, or a 204 from a route that should have created something, is a logic smell.</p>
+            
+            
+          </section><section class="block">
+            <h2>Redirects are requests you did not type</h2>
+            <p>301 and 302 tell the client to go somewhere else. If Location is built from your input, you have an open redirect, and sometimes a header injection if a newline survived. 307 and 308 keep the method and body. A 302 that turns a POST into a GET can drop a token that a 307 would have forwarded.</p><p>Watch the hop count. A login that redirects three times may set the session on a hop you are not looking at.</p>
+            
+            
+          </section><section class="block">
+            <h2>401, 403, 404, 405</h2>
+            <p>401 means you need to authenticate. 403 means the server knows you and still refuses. When an object you should not see returns 403, and a missing object returns 404, the difference confirms the object exists. That is an identifier oracle.</p><p>500 after a single quote, a long string, or a changed content type is a parsing bug, not proof of injection. Note the input that flipped the status, then reproduce it once in a lab before you call it anything.</p>
+            
+            <p class="note">Write down the pair: same request, one field changed, status changed. That pair is your evidence.</p>
+          </section>
+      <section class="block"><h2>Codes you will actually see</h2>
+      <input id="filter" placeholder="Filter by code" class="filter">
+      <ul class="grid" id="status-list"></ul></section>
+      <section class="block quiz" data-slug="status">
+    <h2>Check yourself</h2>
+    <p class="mute">Three questions. Nothing unlocks. A pass is just a mark in this browser so you know you read it.</p>
+    <ol class="qs">
+      <li class="q" data-answer="1">
+            <p class="qprompt">A JSON API returns HTTP 200 and a body field errors. You should</p>
+            <div class="choices">
+              <button type="button" data-i="0">Treat it as success and move on</button><button type="button" data-i="1">Read the body. Success at the HTTP layer is not success in the API</button><button type="button" data-i="2">Assume the server is down</button><button type="button" data-i="3">Retry with GET</button>
+            </div>
+            <p class="why" hidden>Many APIs tunnel their own errors inside a 200. The status line is only the first opinion.</p>
+          </li><li class="q" data-answer="1">
+            <p class="qprompt">403 for a real id and 404 for a fake id means</p>
+            <div class="choices">
+              <button type="button" data-i="0">The server is random</button><button type="button" data-i="1">The existence of the object leaked through the status</button><button type="button" data-i="2">You are admin</button><button type="button" data-i="3">TLS failed</button>
+            </div>
+            <p class="why" hidden>The split is an oracle. You learned the id is real without being allowed to read it.</p>
+          </li><li class="q" data-answer="1">
+            <p class="qprompt">307 differs from 302 because</p>
+            <div class="choices">
+              <button type="button" data-i="0">307 drops cookies</button><button type="button" data-i="1">307 keeps the original method and body</button><button type="button" data-i="2">307 is only for HTTP/2</button><button type="button" data-i="3">307 cannot carry a Location</button>
+            </div>
+            <p class="why" hidden>302 historically gets replayed as GET. 307 and 308 must not change the method.</p>
+          </li>
+    </ol>
+    <button type="button" class="btn grade">Grade this module</button>
+  </section>
+      <div class="pager">
+        <a href="headers.html">03 Headers</a>
+        <a class="next" href="signals.html">Next: What to notice</a>
+      </div></main>
+  <script src="data.js"></script>
+  <script src="site.js"></script>
+  
+</body>
+</html>

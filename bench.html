@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wire bench · HTTP Field Notes</title>
+  <meta name="description" content="A field manual for reading HTTP the way a bug hunter does.">
+  <meta name="theme-color" content="#14160f">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+</head>
+<body>
+  <header class="top">
+    <div class="bar">
+      <a class="brand" href="index.html"><span>HTTP</span> Field Notes</a>
+      <a class="source" href="https://github.com/moadh704/http-for-bug-hunters">Source</a>
+    </div>
+    <nav class="pills"><a class="pill" href="index.html">Path</a><a class="pill on" href="bench.html">Wire bench</a><a class="pill" href="fundamentals.html">01</a><a class="pill" href="methods.html">02</a><a class="pill" href="headers.html">03</a><a class="pill" href="status.html">04</a><a class="pill" href="signals.html">05</a><a class="pill" href="advanced.html">06</a><a class="pill" href="practice.html">07</a></nav>
+  </header>
+  <main>
+    <p class="kicker">Tool</p>
+    <h1>Wire bench</h1>
+    <p class="lede">Build an HTTP/1.1 request and read it the way a proxy does. Content-Length is added when you have a body and did not set one yourself. Nothing is sent.</p>
+    <div class="bench" id="bench">
+      <form class="form">
+        <div class="method-row">
+          <label>Method
+            <select id="method">
+              <option>GET</option><option selected>POST</option><option>PUT</option><option>PATCH</option><option>DELETE</option><option>OPTIONS</option>
+            </select>
+          </label>
+          <label class="grow">Path
+            <input id="path" value="/api/profile">
+          </label>
+        </div>
+        <div id="headers">
+          <div class="hrow"><input aria-label="Header name" value="Host"><input aria-label="Header value" value="app.example"></div>
+          <div class="hrow"><input aria-label="Header name" value="Content-Type"><input aria-label="Header value" value="application/json"></div>
+        </div>
+        <button type="button" id="add-header" class="btn ghost">Add header</button>
+        <label>Body
+          <textarea id="body">{"id":1}</textarea>
+        </label>
+      </form>
+      <div>
+        <pre id="raw"></pre>
+        <ul id="notes"></ul>
+        <p class="faint">This stays in the browser. It does not send the request anywhere.</p>
+      </div>
+    </div></main>
+  <script src="data.js"></script>
+  <script src="site.js"></script>
+  
+</body>
+</html>

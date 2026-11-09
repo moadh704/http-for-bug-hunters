@@ -1,190 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HTTP for Bug Hunters · Learn HTTP Like a Hunter</title>
-    <meta name="description" content="A high-quality, structured learning resource for understanding HTTP from a bug hunting and web security perspective. Theory meets practical application.">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌐</text></svg>">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <style>
-        .star-section {
-            text-align: center;
-            margin-top: 2rem;
-        }
-        .star-count {
-            font-size: 1.1rem;
-            color: var(--text-dim);
-            margin-bottom: 0.75rem;
-        }
-        .star-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.6rem;
-            background: #24292e;
-            color: white;
-            padding: 0.85rem 1.8rem;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.2s ease;
-        }
-        .star-btn:hover {
-            background: #1b1f23;
-            transform: translateY(-2px);
-        }
-    </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Path · HTTP Field Notes</title>
+  <meta name="description" content="A field manual for reading HTTP the way a bug hunter does.">
+  <meta name="theme-color" content="#14160f">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
 </head>
 <body>
-    <header>
-        <div class="container">
-            <nav>
-                <a href="index.html" class="logo">HTTP for Bug Hunters</a>
-                <div>
-                    <a href="https://github.com/moadh704/http-for-bug-hunters" target="_blank" class="btn btn-secondary" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">
-                        <i class="fab fa-github"></i> GitHub
-                    </a>
-                </div>
-            </nav>
-        </div>
-    </header>
-
-    <!-- Hero -->
-    <div class="hero">
-        <div class="container">
-            <h1>Understand HTTP.<br>Think like a hunter.</h1>
-            <p class="hero-subtitle">
-                A structured learning resource that teaches HTTP internals with a security-first mindset. 
-                Built for bug bounty hunters, pentesters, and security researchers.
-            </p>
-
-            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; align-items: center;">
-                <a href="module-1-fundamentals.html" class="btn">
-                    Start Learning <i class="fas fa-arrow-right"></i>
-                </a>
-            </div>
-
-            <!-- Star Section with Live Count -->
-            <div class="star-section">
-                <div class="star-count" id="star-count">
-                    <i class="fas fa-star" style="color: #f1c40f; margin-right: 6px;"></i> Loading stars...
-                </div>
-                <a href="https://github.com/moadh704/http-for-bug-hunters" target="_blank" class="star-btn">
-                    <i class="fab fa-github"></i>
-                    <span>Star on GitHub</span>
-                </a>
-                <p style="margin-top: 0.6rem; font-size: 0.85rem; color: var(--text-faint);">
-                    If this project helps you, consider giving it a star ❤️
-                </p>
-            </div>
-        </div>
+  <header class="top">
+    <div class="bar">
+      <a class="brand" href="index.html"><span>HTTP</span> Field Notes</a>
+      <a class="source" href="https://github.com/moadh704/http-for-bug-hunters">Source</a>
     </div>
-
-    <!-- Why This Exists -->
-    <div class="container section">
-        <div class="section-header">
-            <h2>Why This Resource Exists</h2>
-            <p style="max-width: 620px; margin: 0 auto; color: var(--text-dim);">
-                Most HTTP tutorials are either too basic or too academic. This project bridges the gap — 
-                giving you both deep understanding and practical application for real security testing.
-            </p>
-        </div>
-
-        <div class="grid">
-            <div class="card">
-                <h3><i class="fas fa-search" style="color: var(--accent); margin-right: 0.5rem;"></i> Security-First Approach</h3>
-                <p>Every concept is taught with bug hunting and web security in mind. You won’t just learn how HTTP works — you’ll learn how attackers abuse it.</p>
-            </div>
-            <div class="card">
-                <h3><i class="fas fa-layer-group" style="color: var(--accent); margin-right: 0.5rem;"></i> Structured Learning</h3>
-                <p>Clear modules with learning objectives, theory, practical examples, and key takeaways. Designed for progressive understanding.</p>
-            </div>
-            <div class="card">
-                <h3><i class="fas fa-link" style="color: var(--accent); margin-right: 0.5rem;"></i> Practice Recommendations</h3>
-                <p>We don’t build vulnerable labs here. Instead, we point you to the best hands-on resources (especially PortSwigger Web Security Academy).</p>
-            </div>
-        </div>
+    <nav class="pills"><a class="pill on" href="index.html">Path</a><a class="pill" href="bench.html">Wire bench</a><a class="pill" href="fundamentals.html">01</a><a class="pill" href="methods.html">02</a><a class="pill" href="headers.html">03</a><a class="pill" href="status.html">04</a><a class="pill" href="signals.html">05</a><a class="pill" href="advanced.html">06</a><a class="pill" href="practice.html">07</a></nav>
+  </header>
+  <main>
+    <p class="kicker">A field manual</p>
+    <h1>Read the message before you name the bug.</h1>
+    <p class="lede">Six short modules on the HTTP a bug hunter actually stares at, plus a wire bench that builds the request in front of you. No star counter. No fake unlock gate.</p>
+    <div class="row">
+      <a class="btn" href="fundamentals.html">Start with the message</a>
+      <a class="btn ghost" href="bench.html">Open the wire bench</a>
     </div>
-
-    <!-- Learning Path -->
-    <div id="learning-path" class="container section">
-        <div class="section-header">
-            <h2>Learning Path</h2>
-            <p style="max-width: 580px; margin: 0 auto; color: var(--text-dim);">
-                Follow the modules in order. Complete the quiz at the end of each module to unlock the next one.
-            </p>
-        </div>
-
-        <div class="grid">
-            <a href="module-1-fundamentals.html" class="module" style="text-decoration: none; color: inherit;">
-                <div class="module-number">MODULE 1</div>
-                <h3>HTTP Fundamentals</h3>
-                <p>Requests, responses, and how data actually moves between client and server.</p>
-            </a>
-
-            <a href="module-2-methods.html" class="module" style="text-decoration: none; color: inherit;">
-                <div class="module-number">MODULE 2</div>
-                <h3>HTTP Methods Deep Dive</h3>
-                <p>GET, POST, PUT, DELETE, PATCH and their security implications in real testing.</p>
-            </a>
-
-            <a href="module-3-headers.html" class="module" style="text-decoration: none; color: inherit;">
-                <div class="module-number">MODULE 3</div>
-                <h3>Headers Mastery</h3>
-                <p>Request and response headers that matter most for security testing.</p>
-            </a>
-
-            <a href="module-4-status-codes.html" class="module" style="text-decoration: none; color: inherit;">
-                <div class="module-number">MODULE 4</div>
-                <h3>Status Codes & Behavior</h3>
-                <p>What status codes really mean and what they can leak during testing.</p>
-            </a>
-
-            <a href="module-5-vulnerabilities.html" class="module" style="text-decoration: none; color: inherit;">
-                <div class="module-number">MODULE 5</div>
-                <h3>Finding Vulnerabilities</h3>
-                <p>How to identify security issues at the HTTP layer in real engagements.</p>
-            </a>
-
-            <a href="module-6-advanced.html" class="module" style="text-decoration: none; color: inherit;">
-                <div class="module-number">MODULE 6</div>
-                <h3>Advanced Techniques</h3>
-                <p>Request smuggling, race conditions, JWT attacks, and other advanced topics.</p>
-            </a>
-        </div>
-    </div>
-
-    <footer>
-        <div class="container">
-            <p>Built with care for people who want to truly understand HTTP for security testing.</p>
-            <p style="margin-top: 0.5rem; font-size: 0.85rem;">
-                <a href="https://github.com/moadh704/http-for-bug-hunters" target="_blank" style="color: var(--accent); text-decoration: none;">View on GitHub</a>
-            </p>
-        </div>
-    </footer>
-
-    <script>
-        // Fetch live star count from GitHub API
-        async function fetchStarCount() {
-            try {
-                const response = await fetch('https://api.github.com/repos/moadh704/http-for-bug-hunters');
-                if (!response.ok) throw new Error('Failed to fetch');
-                
-                const data = await response.json();
-                const starCount = data.stargazers_count || 0;
-                
-                document.getElementById('star-count').innerHTML = 
-                    `<i class="fas fa-star" style="color: #f1c40f; margin-right: 6px;"></i> ${starCount} stars on GitHub`;
-            } catch (error) {
-                document.getElementById('star-count').innerHTML = 
-                    `<i class="fas fa-star" style="color: #f1c40f; margin-right: 6px;"></i> Star this project`;
-            }
-        }
-
-        window.onload = function() {
-            fetchStarCount();
-        };
-    </script>
+    <p class="faint" id="passed">0 of 6 checks passed in this browser.</p>
+    <ol class="cards">
+      <li><a class="card" href="fundamentals.html" data-score="fundamentals">
+            <div class="card-top"><span class="idx">01</span><span class="score">Unread</span></div>
+            <h2>The message</h2>
+            <p>HTTP is a conversation of messages, not pages. If you can read one request and one response on the wire, every later bug class gets quieter.</p>
+          </a></li><li><a class="card" href="methods.html" data-score="methods">
+            <div class="card-top"><span class="idx">02</span><span class="score">Unread</span></div>
+            <h2>Methods</h2>
+            <p>The verb is a promise about side effects. Broken access control often starts when the app believes the promise and an attacker does not.</p>
+          </a></li><li><a class="card" href="headers.html" data-score="headers">
+            <div class="card-top"><span class="idx">03</span><span class="score">Unread</span></div>
+            <h2>Headers</h2>
+            <p>Headers decide who the request is for, whether it is cached, and which origin may read the response. Most HTTP bugs are header bugs.</p>
+          </a></li><li><a class="card" href="status.html" data-score="status">
+            <div class="card-top"><span class="idx">04</span><span class="score">Unread</span></div>
+            <h2>Status codes</h2>
+            <p>The status line is the server's one-sentence opinion. Compare it to the body. They often disagree, and the disagreement is the bug.</p>
+          </a></li><li><a class="card" href="signals.html" data-score="signals">
+            <div class="card-top"><span class="idx">05</span><span class="score">Unread</span></div>
+            <h2>What to notice</h2>
+            <p>You are not collecting payloads. You are collecting disagreements: two layers that do not share a definition of the request.</p>
+          </a></li><li><a class="card" href="advanced.html" data-score="advanced">
+            <div class="card-top"><span class="idx">06</span><span class="score">Unread</span></div>
+            <h2>Where messages break</h2>
+            <p>Smuggling, cache poisoning, and downgrade bugs are the same story: two readers, one byte stream, two opinions.</p>
+          </a></li>
+      <li><a class="card" href="practice.html">
+        <span class="idx">07</span>
+        <h2>Practice</h2>
+        <p>Labs that already exist. This guide does not pretend to be one.</p>
+      </a></li>
+    </ol></main>
+  <script src="data.js"></script>
+  <script src="site.js"></script>
+  
 </body>
 </html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>What to notice · HTTP Field Notes</title>
+  <meta name="description" content="A field manual for reading HTTP the way a bug hunter does.">
+  <meta name="theme-color" content="#14160f">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+</head>
+<body>
+  <header class="top">
+    <div class="bar">
+      <a class="brand" href="index.html"><span>HTTP</span> Field Notes</a>
+      <a class="source" href="https://github.com/moadh704/http-for-bug-hunters">Source</a>
+    </div>
+    <nav class="pills"><a class="pill" href="index.html">Path</a><a class="pill" href="bench.html">Wire bench</a><a class="pill" href="fundamentals.html">01</a><a class="pill" href="methods.html">02</a><a class="pill" href="headers.html">03</a><a class="pill" href="status.html">04</a><a class="pill on" href="signals.html">05</a><a class="pill" href="advanced.html">06</a><a class="pill" href="practice.html">07</a></nav>
+  </header>
+  <main>
+      <p class="kicker">Module 05</p>
+      <h1>What to notice</h1>
+      <p class="lede">You are not collecting payloads. You are collecting disagreements: two layers that do not share a definition of the request.</p>
+      <section class="block">
+            <h2>Who parsed it</h2>
+            <p>A CDN, a load balancer, a language runtime, and the app can each decide where the body ends, which host is real, and whether the method is POST. Write the path of hops when you can. A bug that only reproduces through the public hostname, and not against the origin, belongs to the hop in between.</p><p>Content-Type is a claim about the body. Send the same bytes as JSON and as a form. If the app accepts both and applies different checks, you have found the check that only runs for one parser.</p>
+            
+            
+          </section><section class="block">
+            <h2>Trust boundaries in the header block</h2>
+            <p>Anything the client can set is untrusted: Host overrides, forwarded headers, a URL in a query parameter that becomes a server-side fetch, a path that becomes a redirect. The bug is the server treating that value as its own idea.</p><p>A newline inside a header value is special because HTTP/1.1 headers are lines. If the server writes your input into a header and does not strip CR or LF, you may start a new header or even a new response. Test the encoding in a lab, and stop at the first unexpected header rather than building a full response.</p>
+            
+            
+          </section><section class="block">
+            <h2>A short loop that stays honest</h2>
+            <p>Pick one request the app really makes. Change one thing. Compare status, length, and the headers that matter (Location, Set-Cookie, Access-Control-Allow-Origin, Cache-Control). Write the difference in one sentence. That sentence is the start of a report.</p><p>If you cannot say which header or which boundary changed, you do not have a finding yet. You have a hunch.</p>
+            
+            <p class="note">The practice page lists labs where this loop is allowed. The live internet is not your lab.</p>
+          </section>
+      
+      <section class="block quiz" data-slug="signals">
+    <h2>Check yourself</h2>
+    <p class="mute">Three questions. Nothing unlocks. A pass is just a mark in this browser so you know you read it.</p>
+    <ol class="qs">
+      <li class="q" data-answer="1">
+            <p class="qprompt">A bug that only shows up through the CDN, not the origin, belongs to</p>
+            <div class="choices">
+              <button type="button" data-i="0">The user's password manager</button><button type="button" data-i="1">The hop that rewrites the request between the two</button><button type="button" data-i="2">The HTML title</button><button type="button" data-i="3">The favicon</button>
+            </div>
+            <p class="why" hidden>If origin and edge disagree, the rewrite between them is the system under test.</p>
+          </li><li class="q" data-answer="1">
+            <p class="qprompt">Changing only Content-Type is a useful test when</p>
+            <div class="choices">
+              <button type="button" data-i="0">You want a new TLS version</button><button type="button" data-i="1">You suspect a check runs for one parser and not the other</button><button type="button" data-i="2">The body is empty and must stay empty</button><button type="button" data-i="3">You need to disable CORS</button>
+            </div>
+            <p class="why" hidden>The bytes did not change. The claim about how to parse them did. Different claims often hit different code.</p>
+          </li><li class="q" data-answer="1">
+            <p class="qprompt">A report-ready observation names</p>
+            <div class="choices">
+              <button type="button" data-i="0">Every header you have ever seen</button><button type="button" data-i="1">The one field you changed and the status or header that moved</button><button type="button" data-i="2">The company's revenue</button><button type="button" data-i="3">A list of ports</button>
+            </div>
+            <p class="why" hidden>One controlled change plus one observed difference is evidence. A hunch is not.</p>
+          </li>
+    </ol>
+    <button type="button" class="btn grade">Grade this module</button>
+  </section>
+      <div class="pager">
+        <a href="status.html">04 Status codes</a>
+        <a class="next" href="advanced.html">Next: Where messages break</a>
+      </div></main>
+  <script src="data.js"></script>
+  <script src="site.js"></script>
+  
+</body>
+</html>

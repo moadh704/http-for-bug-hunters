@@ -1,61 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Practice Recommendations | HTTP for Bug Hunters</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Practice · HTTP Field Notes</title>
+  <meta name="description" content="A field manual for reading HTTP the way a bug hunter does.">
+  <meta name="theme-color" content="#14160f">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
 </head>
 <body>
-    <header>
-        <div class="container">
-            <nav>
-                <a href="index.html" class="logo">HTTP for Bug Hunters</a>
-                <a href="index.html" class="btn btn-secondary" style="padding:0.55rem 1.1rem; font-size:0.85rem;">Back to Learning Path</a>
-            </nav>
-        </div>
-    </header>
-
-    <div class="container section">
-        <div style="max-width: 780px; margin: 0 auto;">
-            <h1>Practice Recommendations</h1>
-            <p style="font-size: 1.15rem; color: var(--text-dim); margin-bottom: 2.5rem;">
-                Theory is important, but nothing replaces deliberate practice. Here are the best resources to apply what you've learned.
-            </p>
-
-            <div class="content-block">
-                <h2>Primary Recommendation</h2>
-                <div class="highlight">
-                    <h3><a href="https://portswigger.net/web-security" target="_blank" style="color: var(--accent);">PortSwigger Web Security Academy</a></h3>
-                    <p>The best free resource for hands-on HTTP and web security practice. Highly recommended for all modules in this course.</p>
-                </div>
-            </div>
-
-            <div class="content-block">
-                <h2>Other Excellent Resources</h2>
-                <ul style="margin-left: 1.2rem; color: var(--text-dim);">
-                    <li><strong>OWASP Juice Shop</strong> — Great for practicing in a modern vulnerable app.</li>
-                    <li><strong>OWASP WebGoat</strong> — Classic for learning web vulnerabilities.</li>
-                    <li><strong>DVWA (Damn Vulnerable Web Application)</strong> — Good for beginners.</li>
-                </ul>
-            </div>
-
-            <div class="content-block">
-                <h2>How to Practice Effectively</h2>
-                <ul style="margin-left: 1.2rem; color: var(--text-dim);">
-                    <li>Don't just complete labs — understand <em>why</em> the vulnerability exists at the HTTP level.</li>
-                    <li>Try to solve challenges manually before using automated tools.</li>
-                    <li>Keep notes on interesting techniques and behaviors you discover.</li>
-                </ul>
-            </div>
-        </div>
+  <header class="top">
+    <div class="bar">
+      <a class="brand" href="index.html"><span>HTTP</span> Field Notes</a>
+      <a class="source" href="https://github.com/moadh704/http-for-bug-hunters">Source</a>
     </div>
-
-    <footer>
-        <div class="container">
-            <p>Practice makes permanent. Focus on understanding, not just completing labs.</p>
-        </div>
-    </footer>
+    <nav class="pills"><a class="pill" href="index.html">Path</a><a class="pill" href="bench.html">Wire bench</a><a class="pill" href="fundamentals.html">01</a><a class="pill" href="methods.html">02</a><a class="pill" href="headers.html">03</a><a class="pill" href="status.html">04</a><a class="pill" href="signals.html">05</a><a class="pill" href="advanced.html">06</a><a class="pill on" href="practice.html">07</a></nav>
+  </header>
+  <main>
+    <p class="kicker">Module 07</p>
+    <h1>Practice</h1>
+    <p class="lede">This guide does not ship a vulnerable lab. The labs already exist. Use them, and keep notes in the shape of one change and one difference.</p>
+    <ul class="list">
+      <li class="card static">
+            <a href="https://portswigger.net/web-security/request-smuggling">PortSwigger: HTTP request smuggling</a>
+            <p>The cleanest place to see two parsers disagree about a boundary.</p>
+          </li><li class="card static">
+            <a href="https://portswigger.net/web-security/web-cache-poisoning">PortSwigger: Web cache poisoning</a>
+            <p>Unkeyed headers and cache keys, with labs that reset.</p>
+          </li><li class="card static">
+            <a href="https://portswigger.net/web-security/host-header">PortSwigger: Host header attacks</a>
+            <p>Password-reset links and routing that trust Host.</p>
+          </li><li class="card static">
+            <a href="https://portswigger.net/web-security/cors">PortSwigger: CORS</a>
+            <p>Reflected origins and credentialed reads.</p>
+          </li><li class="card static">
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview">MDN: HTTP overview</a>
+            <p>The reference when a header name is unfamiliar. Spec language, not a lab.</p>
+          </li>
+    </ul>
+    <p class="faint">Keep the note as one sentence: the field you changed, and the status or header that moved. If you cannot write that sentence, you are not done with the request.</p>
+    <p class="pager"><a href="advanced.html">Back to where messages break</a></p></main>
+  <script src="data.js"></script>
+  <script src="site.js"></script>
+  
 </body>
 </html>

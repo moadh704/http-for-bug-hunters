@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Headers · HTTP Field Notes</title>
+  <meta name="description" content="A field manual for reading HTTP the way a bug hunter does.">
+  <meta name="theme-color" content="#14160f">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+</head>
+<body>
+  <header class="top">
+    <div class="bar">
+      <a class="brand" href="index.html"><span>HTTP</span> Field Notes</a>
+      <a class="source" href="https://github.com/moadh704/http-for-bug-hunters">Source</a>
+    </div>
+    <nav class="pills"><a class="pill" href="index.html">Path</a><a class="pill" href="bench.html">Wire bench</a><a class="pill" href="fundamentals.html">01</a><a class="pill" href="methods.html">02</a><a class="pill on" href="headers.html">03</a><a class="pill" href="status.html">04</a><a class="pill" href="signals.html">05</a><a class="pill" href="advanced.html">06</a><a class="pill" href="practice.html">07</a></nav>
+  </header>
+  <main>
+      <p class="kicker">Module 03</p>
+      <h1>Headers</h1>
+      <p class="lede">Headers decide who the request is for, whether it is cached, and which origin may read the response. Most HTTP bugs are header bugs.</p>
+      <section class="block">
+            <h2>Host is routing</h2>
+            <p>Host (or the :authority pseudo-header) picks the site on a shared IP. If the app uses that value to build a password-reset link, a cache key, or an absolute redirect, you can sometimes aim that link at a host you control. That is host-header injection. Test it only on a lab or a program that allows it.</p><p>X-Forwarded-Host and X-Forwarded-For are claims made by the previous hop. They are trustworthy only if the app knows that hop is its own proxy. An app that believes a client-supplied forwarded host is making the same mistake.</p>
+            
+            
+          </section><section class="block">
+            <h2>Identity rides in two places</h2>
+            <p>Cookie is the browser's ambient credential. Authorization is an explicit one, often a bearer token. A bug that reflects a cookie into HTML is different from a bug that reflects a token. Note which one the app actually checks, and whether a request with neither still returns private JSON.</p><p>Set-Cookie flags are part of the finding when they are wrong: missing Secure, missing HttpOnly on a session, or a Domain that covers every subdomain.</p>
+            
+            
+          </section><section class="block">
+            <h2>Cache and CORS</h2>
+            <p>A shared cache stores a response when it thinks the request is public. Vary tells it which request headers change the body. If a personalized page is stored without Vary: Cookie, the next visitor receives someone else's page. That is cache deception or poisoning depending on who controls the key.</p><p>Access-Control-Allow-Origin echoes a request's Origin, and Access-Control-Allow-Credentials is true, only when the server meant that exact site to read credentialed responses. A reflected star, or a reflected origin plus credentials, is the bug. A star alone cannot be used with credentials.</p>
+            
+            <p class="note">Read the response headers on a request that included an Origin you do not own. The interesting part is whether the server copies it.</p>
+          </section>
+      <section class="block"><h2>Headers worth naming</h2>
+      <input id="filter" placeholder="Filter" class="filter">
+      <ul class="list" id="header-list"></ul></section>
+      <section class="block quiz" data-slug="headers">
+    <h2>Check yourself</h2>
+    <p class="mute">Three questions. Nothing unlocks. A pass is just a mark in this browser so you know you read it.</p>
+    <ol class="qs">
+      <li class="q" data-answer="1">
+            <p class="qprompt">Why is a client-supplied X-Forwarded-Host dangerous?</p>
+            <div class="choices">
+              <button type="button" data-i="0">It disables TLS</button><button type="button" data-i="1">The app may trust it as the public hostname when building links</button><button type="button" data-i="2">It deletes cookies</button><button type="button" data-i="3">Browsers refuse to send it</button>
+            </div>
+            <p class="why" hidden>Forwarded headers are only meaningful from a proxy the app trusts. From the client they are just another header.</p>
+          </li><li class="q" data-answer="1">
+            <p class="qprompt">A personalized response stored by a shared cache is unsafe when</p>
+            <div class="choices">
+              <button type="button" data-i="0">The page is HTML</button><button type="button" data-i="1">The cache key ignores the cookie or authorization that changed the body</button><button type="button" data-i="2">The status is 301</button><button type="button" data-i="3">The body is empty</button>
+            </div>
+            <p class="why" hidden>Vary (and private Cache-Control) exist so one user's response is not replayed to another.</p>
+          </li><li class="q" data-answer="1">
+            <p class="qprompt">Access-Control-Allow-Origin: * together with credentials</p>
+            <div class="choices">
+              <button type="button" data-i="0">Lets any site read the response with cookies</button><button type="button" data-i="1">Is ignored by browsers for credentialed reads</button><button type="button" data-i="2">Turns the response into a redirect</button><button type="button" data-i="3">Sets a session cookie</button>
+            </div>
+            <p class="why" hidden>Browsers refuse to expose a credentialed response when the allowed origin is a star. A reflected specific origin plus credentials is the real bug.</p>
+          </li>
+    </ol>
+    <button type="button" class="btn grade">Grade this module</button>
+  </section>
+      <div class="pager">
+        <a href="methods.html">02 Methods</a>
+        <a class="next" href="status.html">Next: Status codes</a>
+      </div></main>
+  <script src="data.js"></script>
+  <script src="site.js"></script>
+  
+</body>
+</html>

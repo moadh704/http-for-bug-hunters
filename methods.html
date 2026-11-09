@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Methods · HTTP Field Notes</title>
+  <meta name="description" content="A field manual for reading HTTP the way a bug hunter does.">
+  <meta name="theme-color" content="#14160f">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+</head>
+<body>
+  <header class="top">
+    <div class="bar">
+      <a class="brand" href="index.html"><span>HTTP</span> Field Notes</a>
+      <a class="source" href="https://github.com/moadh704/http-for-bug-hunters">Source</a>
+    </div>
+    <nav class="pills"><a class="pill" href="index.html">Path</a><a class="pill" href="bench.html">Wire bench</a><a class="pill" href="fundamentals.html">01</a><a class="pill on" href="methods.html">02</a><a class="pill" href="headers.html">03</a><a class="pill" href="status.html">04</a><a class="pill" href="signals.html">05</a><a class="pill" href="advanced.html">06</a><a class="pill" href="practice.html">07</a></nav>
+  </header>
+  <main>
+      <p class="kicker">Module 02</p>
+      <h1>Methods</h1>
+      <p class="lede">The verb is a promise about side effects. Broken access control often starts when the app believes the promise and an attacker does not.</p>
+      <section class="block">
+            <h2>What the verb claims</h2>
+            <p>GET and HEAD are supposed to be safe: they should not change state. PUT and DELETE are supposed to be idempotent: repeating them has the same end state as doing them once. POST is neither. PATCH is a partial change and is not automatically idempotent.</p><p>Those are conventions, not laws. A GET that changes a password, or a POST that a cache stores, is a bug even if the status code is 200.</p>
+            
+            
+          </section><section class="block">
+            <h2>The interesting mismatches</h2>
+            <p>Look for the same action on two verbs. A form posts to /user/delete, and GET /user/delete?id=4 does the same thing. That is request forgery waiting for a link. Look for method override headers (X-HTTP-Method-Override and friends) that retune a POST into a DELETE the edge never intended to allow.</p><p>A 405 is useful. It means the path exists and this verb is refused. Try the verb the app uses in the browser, then the one an admin API might use. Do not spray every verb at production hosts you are not authorized to test.</p>
+            <pre>POST /api/users/4 HTTP/1.1
+Host: app.example
+X-HTTP-Method-Override: DELETE
+Content-Length: 0
+
+</pre>
+            <p class="note">If the edge allows POST and the app honors the override, the block on DELETE never ran.</p>
+          </section><section class="block">
+            <h2>OPTIONS is a map</h2>
+            <p>An OPTIONS response, especially a CORS preflight, lists methods and headers the server is willing to talk about. Treat Allow and Access-Control-Allow-Methods as a hint, then confirm with one request. Hints lie.</p>
+            
+            
+          </section>
+      
+      <section class="block quiz" data-slug="methods">
+    <h2>Check yourself</h2>
+    <p class="mute">Three questions. Nothing unlocks. A pass is just a mark in this browser so you know you read it.</p>
+    <ol class="qs">
+      <li class="q" data-answer="1">
+            <p class="qprompt">A GET that changes server state is a problem because</p>
+            <div class="choices">
+              <button type="button" data-i="0">GET cannot carry a query string</button><button type="button" data-i="1">Browsers, caches, and prefetchers assume GET is safe</button><button type="button" data-i="2">GET is always encrypted</button><button type="button" data-i="3">The spec bans query strings on GET</button>
+            </div>
+            <p class="why" hidden>Safe methods get followed, prefetched, and stored. A state change on GET leaks into those behaviors.</p>
+          </li><li class="q" data-answer="1">
+            <p class="qprompt">What is a 405 good for?</p>
+            <div class="choices">
+              <button type="button" data-i="0">Proof the host is down</button><button type="button" data-i="1">A sign the path exists and this verb was refused</button><button type="button" data-i="2">Proof of admin access</button><button type="button" data-i="3">A certificate error</button>
+            </div>
+            <p class="why" hidden>405 Method Not Allowed means the server recognized the target and rejected the verb. 404 means it did not map the target.</p>
+          </li><li class="q" data-answer="1">
+            <p class="qprompt">X-HTTP-Method-Override matters when</p>
+            <div class="choices">
+              <button type="button" data-i="0">The browser cannot send cookies</button><button type="button" data-i="1">A filter blocks a verb but the app still honors the override header</button><button type="button" data-i="2">TLS is off</button><button type="button" data-i="3">The body is JSON</button>
+            </div>
+            <p class="why" hidden>The override is an application convention. The proxy and the app can disagree about which verb they enforced.</p>
+          </li>
+    </ol>
+    <button type="button" class="btn grade">Grade this module</button>
+  </section>
+      <div class="pager">
+        <a href="fundamentals.html">01 The message</a>
+        <a class="next" href="headers.html">Next: Headers</a>
+      </div></main>
+  <script src="data.js"></script>
+  <script src="site.js"></script>
+  
+</body>
+</html>
